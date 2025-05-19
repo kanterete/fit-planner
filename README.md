@@ -1,8 +1,9 @@
-Next.js FitPlanner
+Next.js Fit Planner Webiste
 
 Tech Stack:
-
-Next.js
-Tailwind CSS
-TypeScript
-Lucide
+<ul>
+  <li>Next.js</li>
+  <li>Tailwind CSS</li>
+  <li>TypeScript</li>
+  <li>Lucide</li>
+</ul>
