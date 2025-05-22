@@ -11,7 +11,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="flex items-center justify-between max-w-[1240px] h-24 p-4 border-b border-gray-200">
+    <nav className="mx-auto flex items-center justify-between max-w-[1240px] h-24 p-4 border-b border-gray-200">
       <h1 className="text-4xl p-4">
         Fit<span className="">Planner</span>
       </h1>
@@ -33,18 +33,15 @@ const NavBar = () => {
           <CircleUserRound size={36} />
         </div>
 
-        <div
-          className={`${!isOpen ? "block" : "hidden"} p-4 md:hidden`}
-          onClick={toggleNav}
-        >
-          <Menu size={36} />
+        <div className={`p-4 md:hidden`} onClick={toggleNav}>
+          <Menu size={40} />
         </div>
 
         <div
           className={` 
           ${
             isOpen
-              ? "fixed top-0 left-0 w-full transition duration-500 ease-in-out overflow-y-hidden "
+              ? "fixed top-0 left-0 w-full duration-500 ease-in-out overflow-y-hidden "
               : "fixed left-[100%]"
           } bg-blue-400 h-full text-white text-shadow-2xs p-4 md:hidden`}
         >
