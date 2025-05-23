@@ -11,12 +11,12 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="mx-auto flex items-center justify-between max-w-[1240px] h-24 p-4 border-b border-gray-200">
-      <h1 className="text-4xl p-4">
+    <nav className="mx-auto flex items-center justify-between w-full h-24 p-4 border-b border-gray-200">
+      <h1 className="text-2xl md:text-4xl p-4">
         Fit<span className="">Planner</span>
       </h1>
 
-      <ul className="hidden md:flex text-center items-center p-4 text-3xl">
+      <ul className="hidden md:flex text-center items-center p-4 text-xl md:text-2xl">
         <li className="p-4">
           <a href="#">Dashboard</a>
         </li>
@@ -29,12 +29,12 @@ const NavBar = () => {
       </ul>
       <div className="flex items-center p-4">
         <div className={`hidden sm:flex items-center gap-4`}>
-          <Bell size={36} />
-          <CircleUserRound size={36} />
+          <Bell size={30} className="cursor-pointer" />
+          <CircleUserRound size={30} className="cursor-pointer" />
         </div>
 
         <div className={`p-4 md:hidden`} onClick={toggleNav}>
-          <Menu size={40} />
+          <Menu size={30} />
         </div>
 
         <div
@@ -47,16 +47,16 @@ const NavBar = () => {
         >
           <div className="flex justify-end gap-4">
             <div className="flex gap-4">
-              <Bell size={36} />
-              <CircleUserRound size={36} />
+              <Bell size={30} />
+              <CircleUserRound size={30} />
             </div>
-            <X onClick={toggleNav} size={40} />
+            <X onClick={toggleNav} size={30} />
           </div>
 
-          <h1 className="text-4xl py-4 text-center">
+          <h1 className="text-2xl py-4 text-center">
             Fit<span className="text-blue-900">Planner</span>
           </h1>
-          <ul className="flex flex-col text-center items-center py-4 text-3xl">
+          <ul className="flex flex-col text-center items-center py-4 text-xl">
             <li
               className="py-4 border-b border-gray-200 cursor-pointer w-full"
               onClick={toggleNav}
