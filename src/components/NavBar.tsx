@@ -17,7 +17,8 @@ const NavBar = () => {
         Fit<span className="text-blue-600 ">Planner</span>
       </h1>
 
-      <ul className="hidden md:flex text-center items-center p-4 text-xl md:text-2xl">
+      {/* Desktop Menu */}
+      <ul className="hidden md:flex text-center items-center font-medium p-4 text-xl md:text-2xl">
         <li className="p-4">
           <a href="#">Dashboard</a>
         </li>
@@ -28,6 +29,8 @@ const NavBar = () => {
           <a href="">Diet</a>
         </li>
       </ul>
+
+      {/* Notification Menu */}
       <div className="flex items-center p-4">
         <div className={`hidden sm:flex items-center gap-4`}>
           <Bell size={30} className="cursor-pointer" />

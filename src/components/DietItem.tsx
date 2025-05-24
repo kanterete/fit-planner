@@ -44,7 +44,7 @@ const DietItem = ({ hasDietToday }: DietItemProps) => {
                   transition={{ duration: 0.3 }}
                   className="overflow-hidden"
                 >
-                  <ol className="point">
+                  <ol>
                     {meal.items.map((item, i) => (
                       <li key={i} className="flex text-md ml-2 text-black ">
                         {item}
