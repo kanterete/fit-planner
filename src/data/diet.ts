@@ -22,7 +22,7 @@ export const dietData = [
   },
   {
     id: 2,
-    date: "2025-05-21",
+    date: "2025-05-24",
     meals: [
       {
         name: "Breakfast",

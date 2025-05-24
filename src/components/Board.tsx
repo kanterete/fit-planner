@@ -22,9 +22,9 @@ const Board = () => {
   const hasDietToday = dietData.find((diet) => diet.date === today);
 
   return (
-    <div className="p-4 mx-auto border-2 border-gray-100 my-4 max-w-[1240px] h-240 flex flex-col">
+    <div className="p-4 mx-auto my-4 max-w-[1240px] h-fit flex flex-col">
       <CurrentDate today={today} hasTrainingToday={hasTrainingToday} />
-      <div className="flex w-full flex-wrap md:flex-row gap-4 items-center md:align">
+      <div className="flex w-full flex-wrap md:flex-row gap-4 border-gray-100 border-2">
         <Stats />
         <DietList hasDietToday={hasDietToday} />
         <TrainingList hasTrainingToday={hasTrainingToday} />

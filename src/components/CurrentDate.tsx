@@ -24,10 +24,10 @@ const CurrentDate = ({ today, hasTrainingToday }: CurrentDateProps) => {
 
   return (
     <div className="my-4 p-4 md:px-8 mx-auto border-2 border-gray-100 w-full bg-blue-500 text-white h-fit md:h-40 rounded-xl flex flex-col justify-center">
-      <h2 className="text-2xl md:text-3xl">
+      <h2 className="text-2xl md:text-3xl font-semibold">
         🔥 Today: {dayName}, {today}
       </h2>
-      <h1 className="text-3xl md:text-4xl">
+      <h1 className="text-3xl md:text-4xl font-bold">
         {hasTrainingToday ? trainingType : "Nothing planned for this day"}
       </h1>
     </div>
