@@ -5,5 +5,5 @@ Tech Stack:
   <li>Next.js</li>
   <li>Tailwind CSS</li>
   <li>TypeScript</li>
-  <li>Lucide</li>
+  <li>Shadcn/ui</li>
 </ul>
