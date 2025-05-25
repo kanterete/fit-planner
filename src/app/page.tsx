@@ -1,11 +1,5 @@
-import Board from "@/components/Board";
-import NavBar from "@/components/NavBar";
+import DashBoard from "@/components/DashBoard";
 
 export default function Home() {
-  return (
-    <div className="h-screen w-screen overflow-x-hidden">
-      <NavBar />
-      <Board />
-    </div>
-  );
+  return <DashBoard />;
 }

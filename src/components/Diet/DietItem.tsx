@@ -1,28 +1,26 @@
+"use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { DietDay } from "@/types/types";
+import { Meal } from "@/types/types";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 type DietItemProps = {
-  hasDietToday: DietDay | undefined;
+  meals: Meal[];
 };
 
-const DietItem = ({ hasDietToday }: DietItemProps) => {
+const DietItem = ({ meals }: DietItemProps) => {
   const [isOpen, setIsOpen] = useState<boolean[]>([]);
-
   const toggleDropdown = (index: number) => {
     setIsOpen((prev) => prev.map((open, i) => (i === index ? !open : open)));
   };
 
   useEffect(() => {
-    if (hasDietToday)
-      setIsOpen(new Array(hasDietToday.meals.length).fill(false));
-  }, [hasDietToday]);
+    if (meals) setIsOpen(new Array(meals.length).fill(false));
+  }, [meals]);
 
-  const mealItems = hasDietToday?.meals ?? [];
   return (
     <>
-      {mealItems.map((meal, index) => (
+      {meals.map((meal, index) => (
         <div key={index} className="flex flex-col">
           <div className="text-gray-500 sm:gap-4 ">
             <p
@@ -45,13 +43,13 @@ const DietItem = ({ hasDietToday }: DietItemProps) => {
                   transition={{ duration: 0.3 }}
                   className="overflow-hidden"
                 >
-                  <ol>
+                  <ul>
                     {meal.items.map((item, i) => (
-                      <li key={i} className="flex text-md ml-2 text-black ">
-                        {item}
+                      <li key={i} className="flex text-md ml-2 text-black">
+                        - {item}
                       </li>
                     ))}
-                  </ol>
+                  </ul>
                   <p className="font-normal italic">
                     Total Calories:{" "}
                     <span className="font-semibold text-blue-600">

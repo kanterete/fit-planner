@@ -17,7 +17,7 @@ export const trainingData = [
   {
     id: 2,
     name: "Push Day - Type B",
-    date: "2025-05-26",
+    date: "2025-05-25",
     exercises: [
       { name: "Incline Bench Press", sets: 3, reps: 6, weight: 60 },
       { name: "Machine Shoulder Press", sets: 3, reps: 10, weight: 45 },
@@ -47,7 +47,7 @@ export const trainingData = [
   {
     id: 4,
     name: "Leg Day - Type B",
-    date: "2025-05-27",
+    date: "2025-05-26",
     exercises: [
       { name: "Front Squats", sets: 3, reps: 8, weight: 50 },
       { name: "Bulgarian Split Squat", sets: 3, reps: 10, weight: 20 },

@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, CircleUserRound, Menu, X } from "lucide-react";
 import { useState } from "react";
-
+import Link from "next/link";
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -20,13 +20,19 @@ const NavBar = () => {
       {/* Desktop Menu */}
       <ul className="hidden md:flex text-center items-center font-medium p-4 text-xl md:text-2xl">
         <li className="p-4">
-          <a href="#">Dashboard</a>
+          <Link href="/" className="hover:underline">
+            Dashboard
+          </Link>
         </li>
         <li className="p-4">
-          <a href="">Training</a>
+          <Link href="/add-workout" className="hover:underline">
+            Workout
+          </Link>
         </li>
         <li className="p-4">
-          <a href="">Diet</a>
+          <Link href="/add-diet" className="hover:underline">
+            Diet
+          </Link>
         </li>
       </ul>
 
@@ -68,19 +74,25 @@ const NavBar = () => {
                   className="py-4 border-b border-gray-200 cursor-pointer w-full"
                   onClick={toggleNav}
                 >
-                  <a href="#">Dashboard</a>
+                  <Link href="/" className="hover:underline">
+                    Dashboard
+                  </Link>
                 </li>
                 <li
                   className="py-4 border-b border-gray-200 cursor-pointer w-full"
                   onClick={toggleNav}
                 >
-                  <a href="#">Training</a>
+                  <Link href="/add-workout" className="hover:underline">
+                    Workout
+                  </Link>
                 </li>
                 <li
                   className="py-4 cursor-pointer border-b border-gray-200 w-full"
                   onClick={toggleNav}
                 >
-                  <a href="#">Diet</a>
+                  <Link href="/add-diet" className="hover:underline">
+                    Diet
+                  </Link>
                 </li>
               </ul>
             </motion.div>
