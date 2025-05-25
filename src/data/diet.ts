@@ -4,17 +4,17 @@ export const dietData = [
     date: "2025-05-23",
     meals: [
       {
-        name: "Breakfast",
+        time: "Breakfast",
         items: ["Oatmeal with banana", "Cottage cheese", "Green tea"],
         calories: 400,
       },
       {
-        name: "Lunch",
+        time: "Lunch",
         items: ["Chicken breast", "Rice", "Broccoli"],
         calories: 600,
       },
       {
-        name: "Dinner",
+        time: "Dinner",
         items: ["Wholegrain sandwich", "Boiled egg", "Tomato"],
         calories: 350,
       },
@@ -22,20 +22,20 @@ export const dietData = [
   },
   {
     id: 2,
-    date: "2025-05-24",
+    date: "2025-05-25",
     meals: [
       {
-        name: "Breakfast",
+        time: "Breakfast",
         items: ["Pancakes with cottage cheese", "Apple"],
         calories: 420,
       },
       {
-        name: "Lunch",
+        time: "Lunch",
         items: ["Turkey meatballs", "Pasta", "Carrots"],
         calories: 580,
       },
       {
-        name: "Dinner",
+        time: "Dinner",
         items: ["Skyr with almonds", "Toast with peanut butter"],
         calories: 370,
       },

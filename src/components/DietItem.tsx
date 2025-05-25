@@ -19,16 +19,17 @@ const DietItem = ({ hasDietToday }: DietItemProps) => {
       setIsOpen(new Array(hasDietToday.meals.length).fill(false));
   }, [hasDietToday]);
 
+  const mealItems = hasDietToday?.meals ?? [];
   return (
     <>
-      {hasDietToday?.meals.map((meal, index) => (
+      {mealItems.map((meal, index) => (
         <div key={index} className="flex flex-col">
           <div className="text-gray-500 sm:gap-4 ">
             <p
               onClick={() => toggleDropdown(index)}
               className="cursor-pointer font-medium flex justify-between text-xl"
             >
-              {meal.name}
+              {meal.time}
               {!isOpen[index] ? (
                 <ChevronRight color="blue" />
               ) : (

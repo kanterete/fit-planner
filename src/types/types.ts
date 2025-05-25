@@ -13,7 +13,7 @@ export type TrainingDay = {
 };
 
 export type Meal = {
-  name: string;
+  time: string;
   items: string[];
   calories: number;
 };
