@@ -5,14 +5,14 @@ import TrainingList from "./Training/TrainingList";
 import { getDate } from "@/utils/getDate";
 import DietList from "./Diet/DietList";
 import DateBar from "./DateBar";
-import { DietDay, TrainingDay } from "@/types/types";
+import { DietDay } from "@/types/types";
 import { useTraining } from "@/hooks/useTraining";
 
 const DashBoard = () => {
   const today = getDate();
 
   const [diet, setDiet] = useState<DietDay[]>([]);
-  const { training, setTraining } = useTraining();
+  const { training } = useTraining();
 
   useEffect(() => {
     //load diets from storage

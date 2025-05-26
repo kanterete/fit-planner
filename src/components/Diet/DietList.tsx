@@ -4,8 +4,6 @@ import { CookingPot } from "lucide-react";
 import React from "react";
 import DietItem from "./DietItem";
 import { DietDay } from "@/types/types";
-import TrainingForm from "../Training/TrainingForm";
-import DietForm from "./DietForm";
 
 type DietListProps = {
   dietToday?: DietDay;
@@ -34,7 +32,6 @@ const DietList = ({ dietToday }: DietListProps) => {
           )}
         </div>
       </div>
-      <DietForm />
     </div>
   );
 };
