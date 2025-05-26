@@ -1,5 +1,6 @@
 "use client";
-import { getFormattedDate } from "@/utils/getFormattedDate";
+import { useTraining } from "@/hooks/useTraining";
+import { getDate } from "@/utils/getDate";
 import {
   Asterisk,
   CalendarHeart,
@@ -8,93 +9,36 @@ import {
   Repeat,
   Weight,
 } from "lucide-react";
-import React, { useState } from "react";
-import TrainingButton from "./TrainingButton";
-import { TrainingDay } from "@/types/types";
+import React from "react";
 
 const TrainingForm = () => {
-  const today = getFormattedDate();
-  const [trainingDate, setTrainingDate] = useState(today);
-  const [trainingName, setTrainingName] = useState("");
-  const [exerciseName, setExerciseName] = useState("");
-  const [exerciseSets, setExerciseSets] = useState<number>(1);
-  const [exerciseReps, setExerciseReps] = useState<number>(1);
-  const [exerciseWeight, setExerciseWeight] = useState<number>(1);
+  const today = getDate();
 
-  const collectData = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (
-      !trainingName ||
-      !exerciseName ||
-      exerciseSets === null ||
-      exerciseReps === null ||
-      exerciseWeight === null
-    )
-      return;
-
-    //Get item from storage
-    const stored = localStorage.getItem("training");
-    const parsed: Record<string, TrainingDay> = stored
-      ? JSON.parse(stored)
-      : {};
-
-    //If training for this day doesn't exist, create one
-    if (!parsed[trainingDate]) {
-      parsed[trainingDate] = {
-        id: Date.now(),
-        name: trainingName,
-        date: trainingDate,
-        exercises: [],
-      };
-    } else {
-      alert("training already exists");
-    }
-
-    //read training for today
-    const exercise = parsed[trainingDate].exercises;
-    const existingExerciseName = exercise.find(
-      (ex) => ex.name === trainingName
-    );
-    const existingExerciseReps = exercise.find(
-      (ex) => ex.reps === exerciseReps
-    );
-    const existingExerciseSets = exercise.find(
-      (ex) => ex.sets === exerciseSets
-    );
-    const existingExerciseWeight = exercise.find(
-      (ex) => ex.sets === exerciseWeight
-    );
-
-    if (
-      !existingExerciseName &&
-      !existingExerciseReps &&
-      !existingExerciseSets &&
-      !existingExerciseWeight
-    ) {
-      exercise.push({
-        name: exerciseName,
-        sets: exerciseSets,
-        reps: exerciseReps,
-        weight: exerciseWeight,
-      });
-    } else alert("exercise already existing");
-
-    localStorage.setItem("training", JSON.stringify(parsed));
-
-    //Clearing
-    setExerciseName("");
-    setTrainingName("");
-    setExerciseReps(1);
-    setExerciseSets(1);
-  };
+  const {
+    addTraining,
+    trainingName,
+    setTrainingName,
+    trainingDate,
+    setTrainingDate,
+    exerciseName,
+    setExerciseName,
+    exerciseReps,
+    setExerciseReps,
+    exerciseSets,
+    setExerciseSets,
+    exerciseWeight,
+    setExerciseWeight,
+  } = useTraining();
 
   return (
     <div className="border-2 flex flex-col border-gray-100 rounded-xl justify-center p-4 w-full max-w-[300px] h-fit">
       <h1 className="font-semibold flex gap-5 items-center mb-2 text-2xl">
         <NotebookPen color="blue" /> Add workout
       </h1>
-      <form className="text-black border-0 border-gray-200 w-full">
+      <form
+        onSubmit={addTraining}
+        className="text-black border-0 border-gray-200 w-full"
+      >
         <label
           className="mb-2 flex gap-2 justify-between"
           htmlFor="trainingName"
@@ -204,8 +148,13 @@ const TrainingForm = () => {
           onChange={(e) => setTrainingDate(e.target.value)}
           min={today}
         />
+
+        <input
+          type="submit"
+          className="text-white bg-blue-500 rounded-xl p-2 mt-4 flex justify-center w-full items-center font-semibold"
+          value="+ Add workout"
+        />
       </form>
-      <TrainingButton collectData={collectData} />
     </div>
   );
 };

@@ -25,7 +25,7 @@ const NavBar = () => {
           </Link>
         </li>
         <li className="p-4">
-          <Link href="/add-workout" className="hover:underline">
+          <Link href="/add-training" className="hover:underline">
             Workout
           </Link>
         </li>
@@ -82,7 +82,7 @@ const NavBar = () => {
                   className="py-4 border-b border-gray-200 cursor-pointer w-full"
                   onClick={toggleNav}
                 >
-                  <Link href="/add-workout" className="hover:underline">
+                  <Link href="/add-training" className="hover:underline">
                     Workout
                   </Link>
                 </li>

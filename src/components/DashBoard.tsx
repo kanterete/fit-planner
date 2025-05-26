@@ -2,24 +2,19 @@
 import { useEffect, useState } from "react";
 import Stats from "./Stats";
 import TrainingList from "./Training/TrainingList";
-import { getFormattedDate } from "@/utils/getFormattedDate";
+import { getDate } from "@/utils/getDate";
 import DietList from "./Diet/DietList";
 import DateBar from "./DateBar";
 import { DietDay, TrainingDay } from "@/types/types";
+import { useTraining } from "@/hooks/useTraining";
 
 const DashBoard = () => {
-  const [today, setToday] = useState("");
+  const today = getDate();
+
   const [diet, setDiet] = useState<DietDay[]>([]);
-  const [training, setTraining] = useState<TrainingDay[]>([]);
+  const { training, setTraining } = useTraining();
 
   useEffect(() => {
-    //load trainings from storage
-    const storedTraining = localStorage.getItem("training");
-    if (storedTraining) {
-      const parsed: Record<string, TrainingDay> = JSON.parse(storedTraining);
-      const values = Object.values(parsed);
-      setTraining(values);
-    }
     //load diets from storage
     const storedDiet = localStorage.getItem("diet");
     if (storedDiet) {
@@ -27,9 +22,6 @@ const DashBoard = () => {
       const values = Object.values(parsed);
       setDiet(values);
     }
-
-    //set date
-    setToday(getFormattedDate());
   }, []);
 
   const trainingToday = training.find((training) => training.date === today);

@@ -1,11 +1,11 @@
 "use client";
 
-import { CookingPot, Plus } from "lucide-react";
+import { CookingPot } from "lucide-react";
 import React from "react";
 import DietItem from "./DietItem";
 import { DietDay } from "@/types/types";
-
-import Link from "next/link";
+import TrainingForm from "../Training/TrainingForm";
+import DietForm from "./DietForm";
 
 type DietListProps = {
   dietToday?: DietDay;
@@ -33,15 +33,8 @@ const DietList = ({ dietToday }: DietListProps) => {
             </span>
           )}
         </div>
-
-        <Link
-          href="/add-diet"
-          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-xl transition-all justify-center gap-2 flex items-center w-full"
-        >
-          <Plus size={20} />
-          Add meal
-        </Link>
       </div>
+      <DietForm />
     </div>
   );
 };

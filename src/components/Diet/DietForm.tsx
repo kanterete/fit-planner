@@ -1,12 +1,11 @@
 "use client";
 import { CalendarHeart, Clock, Flame, Pen, ScrollText } from "lucide-react";
 import React, { useState } from "react";
-import DietButton from "./DietButton";
-import { getFormattedDate } from "@/utils/getFormattedDate";
+import { getDate } from "@/utils/getDate";
 import { DietDay } from "@/types/types";
 
 const DietForm = () => {
-  const today = getFormattedDate();
+  const today = getDate();
 
   const [mealTime, setMealTime] = useState("Breakfast");
   const [mealDate, setMealDate] = useState(today);
@@ -122,7 +121,12 @@ const DietForm = () => {
           min={today}
         />
       </form>
-      <DietButton collectData={collectData} />
+      <button
+        onClick={collectData}
+        className="text-white bg-blue-500 rounded-xl p-2 mt-4 flex justify-center w-full items-center font-semibold"
+      >
+        + Add Diet
+      </button>
     </div>
   );
 };
