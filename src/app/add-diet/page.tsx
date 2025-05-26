@@ -1,4 +1,4 @@
-import DietForm from "@/components/Diet/DietForm";
+import DietForm from "@/components/diet/DietForm";
 
 export default function AddDietPage() {
   return (

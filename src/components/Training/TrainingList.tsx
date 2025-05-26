@@ -1,14 +1,14 @@
-import { TrainingDay } from "@/types/types";
 import { DumbbellIcon } from "lucide-react";
 import React from "react";
 import TrainingItem from "./TrainingItem";
+import { Training } from "@/types/newTypes";
 
 type TrainingListProps = {
-  trainingToday?: TrainingDay;
+  todayTraining?: Training;
 };
 
-const TrainingList = ({ trainingToday }: TrainingListProps) => {
-  const exercises = trainingToday?.exercises ?? [];
+const TrainingList = ({ todayTraining }: TrainingListProps) => {
+  const exercises = todayTraining?.exercises;
 
   return (
     <div className="flex flex-col md:flex-row rounded-xl h-fit w-fit gap-4">
@@ -17,13 +17,7 @@ const TrainingList = ({ trainingToday }: TrainingListProps) => {
           <h1 className="font-semibold flex gap-5 items-center mb-2 text-2xl">
             <DumbbellIcon color="blue" /> Training
           </h1>
-          {exercises.length > 0 ? (
-            <TrainingItem exercises={exercises} />
-          ) : (
-            <span className="text-xl text-gray-400 font-semibold">
-              Rest day 😌
-            </span>
-          )}
+          <TrainingItem exercises={exercises} />
         </div>
       </div>
     </div>
