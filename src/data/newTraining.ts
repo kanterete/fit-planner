@@ -93,7 +93,7 @@ export const dummyWeeklySchedule: WeeklyWorkoutSchedule = {
   days: {
     Monday: "Push Day",
     Tuesday: "Pull Day",
-    Wednesday: "Rest Day",
+    Wednesday: "Push Day",
     Thursday: "Leg Day",
     Friday: "Push Day",
     Saturday: "Pull Day",

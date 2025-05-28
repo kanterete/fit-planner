@@ -14,7 +14,7 @@ const Workout = () => {
   return (
     <>
       <WorkoutList workout={workout} />
-      <WorkoutForm />
+      <WorkoutForm setWorkout={setWorkout} />
     </>
   );
 };
