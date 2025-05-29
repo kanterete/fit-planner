@@ -8,12 +8,15 @@ const Workout = () => {
   const [workout, setWorkout] = useState<WorkoutPlan[]>([]);
 
   useEffect(() => {
+    // const stored = JSON.parse(localStorage.getItem("workout") || "{}");
+    // if (stored) setWorkout(stored);
+    // else
     setWorkout(dummyWorkoutPlan);
   }, []);
 
   return (
     <>
-      <WorkoutList workout={workout} />
+      <WorkoutList setWorkout={setWorkout} workout={workout} />
       <WorkoutForm setWorkout={setWorkout} />
     </>
   );

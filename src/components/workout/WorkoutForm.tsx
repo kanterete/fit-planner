@@ -27,10 +27,13 @@ const WorkoutForm = ({ setWorkout }: WorkoutFormProps) => {
       trainings: [],
     };
 
+    const stored = JSON.parse(localStorage.getItem("workout") || "{}");
+    if (stored) {
+      const updated = [...stored, newWorkout];
+      localStorage.setItem("workout", JSON.stringify(updated));
+      toast("New Workout plan added!");
+    }
     setWorkout((prev) => [...prev, newWorkout]);
-
-    toast("New Workout plan added!");
-
     clearForm();
   };
 

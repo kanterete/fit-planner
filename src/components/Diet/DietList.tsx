@@ -23,13 +23,7 @@ const DietList = ({ dietToday }: DietListProps) => {
           <h1 className="font-semibold flex gap-5 items-center mb-2 text-2xl">
             <CookingPot color="blue" /> Diet
           </h1>
-          {sortedMeals.length > 0 ? (
-            <DietItem meals={sortedMeals} />
-          ) : (
-            <span className="text-xl text-gray-400 font-semibold">
-              Cheat day 😋
-            </span>
-          )}
+          <DietItem meals={sortedMeals} />
         </div>
       </div>
     </div>

@@ -18,6 +18,12 @@ const DietItem = ({ meals }: DietItemProps) => {
     if (meals) setIsOpen(new Array(meals.length).fill(false));
   }, [meals]);
 
+  if (meals.length === 0) {
+    return (
+      <span className="text-xl text-gray-400 font-semibold">Cheat day 😋</span>
+    );
+  }
+
   return (
     <>
       {meals.map((meal, index) => (
