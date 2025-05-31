@@ -19,7 +19,7 @@ const WorkoutForm = ({ setWorkout }: WorkoutFormProps) => {
   const addWorkout = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!workoutName) return toast("Fill up the input!");
+    if (!workoutName.trim()) return toast("Fill up the input!");
 
     const newWorkout: WorkoutPlan = {
       id: "plan-" + uuidv4(),
@@ -27,14 +27,23 @@ const WorkoutForm = ({ setWorkout }: WorkoutFormProps) => {
       trainings: [],
     };
 
-    const stored = JSON.parse(localStorage.getItem("workout") || "{}");
-    if (stored) {
-      const updated = [...stored, newWorkout];
+    try {
+      const stored: WorkoutPlan[] = JSON.parse(
+        localStorage.getItem("workout") || "[]"
+      );
+
+      const updated = Array.isArray(stored)
+        ? [...stored, newWorkout]
+        : [newWorkout];
+
       localStorage.setItem("workout", JSON.stringify(updated));
+      setWorkout(updated);
       toast("New Workout plan added!");
+      clearForm();
+    } catch (error) {
+      console.error("Failed to save workout:", error);
+      toast("Error saving workout plan.");
     }
-    setWorkout((prev) => [...prev, newWorkout]);
-    clearForm();
   };
 
   return (

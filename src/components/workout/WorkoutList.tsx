@@ -10,7 +10,9 @@ type WorkoutListProps = {
 
 const WorkoutList = ({ workout, setWorkout }: WorkoutListProps) => {
   const removePlan = (id: string) => {
-    setWorkout((prev) => prev.filter((prevId) => prevId.id !== id));
+    const updated = workout.filter((plan) => plan.id !== id);
+    setWorkout(updated);
+    localStorage.setItem("workout", JSON.stringify(updated));
   };
 
   return (

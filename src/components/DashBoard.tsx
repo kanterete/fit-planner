@@ -8,12 +8,15 @@ import { DietDay } from "@/types/types";
 import { getWeekday } from "@/utils/getWeekday";
 import { dummyWeeklySchedule, dummyWorkoutPlan } from "@/data/newTraining";
 import TrainingList from "./training/TrainingList";
+import { WorkoutPlan } from "@/types/newTypes";
 
 const DashBoard = () => {
+  const [workout, setWorkout] = useState<WorkoutPlan[]>([]);
+
   const today = getDate();
   const weekday = getWeekday();
 
-  const activePlan = dummyWorkoutPlan.find(
+  const activePlan = workout.find(
     (plan) => plan.id === dummyWeeklySchedule.planId
   );
 
@@ -26,6 +29,13 @@ const DashBoard = () => {
   const [diet, setDiet] = useState<DietDay[]>([]);
 
   useEffect(() => {
+    const stored: WorkoutPlan[] = JSON.parse(
+      localStorage.getItem("workout") || "[]"
+    );
+
+    if (stored.length > 0) setWorkout(stored);
+    else setWorkout(dummyWorkoutPlan);
+
     //load diets from storage
     const storedDiet = localStorage.getItem("diet");
     if (storedDiet) {
