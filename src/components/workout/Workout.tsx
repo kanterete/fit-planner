@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import WorkoutList from "./WorkoutList";
-import WorkoutForm from "./WorkoutForm";
 import { WorkoutPlan } from "@/types/newTypes";
 import { dummyWorkoutPlan } from "@/data/newTraining";
+import WorkoutSelect from "./WorkoutSelect";
+import ExerciseForm from "./ExerciseForm";
 const Workout = () => {
   const [workout, setWorkout] = useState<WorkoutPlan[]>([]);
 
@@ -18,8 +18,8 @@ const Workout = () => {
 
   return (
     <>
-      <WorkoutList setWorkout={setWorkout} workout={workout} />
-      <WorkoutForm setWorkout={setWorkout} />
+      <WorkoutSelect workout={workout} />
+      <ExerciseForm workout={workout} setWorkout={setWorkout} />
     </>
   );
 };

@@ -3,7 +3,6 @@ import {
   WeeklyWorkoutSchedule,
   WorkoutPlan,
 } from "@/types/newTypes";
-import { v4 as uuidv4 } from "uuid";
 
 export const dummyWorkoutPlan: WorkoutPlan[] = [
   {
@@ -13,27 +12,41 @@ export const dummyWorkoutPlan: WorkoutPlan[] = [
       {
         name: "Push Day",
         exercises: [
-          { id: uuidv4(), name: "Bench Press", sets: 4, reps: 8, weight: 70 },
-          { id: uuidv4(), name: "OHP", sets: 3, reps: 10, weight: 40 },
+          {
+            id: "exercise-1",
+            name: "Bench Press",
+            sets: 4,
+            reps: 8,
+            weight: 70,
+          },
+          { id: "exercise-2", name: "OHP", sets: 3, reps: 10, weight: 40 },
         ],
       },
       {
         name: "Pull Day",
         exercises: [
-          { id: uuidv4(), name: "Deadlift", sets: 4, reps: 6, weight: 100 },
-          { id: uuidv4(), name: "Barbell Row", sets: 3, reps: 8, weight: 60 },
+          { id: "exercise-3", name: "Deadlift", sets: 4, reps: 6, weight: 100 },
+          {
+            id: "exercise-4",
+            name: "Barbell Row",
+            sets: 3,
+            reps: 8,
+            weight: 60,
+          },
         ],
       },
       {
         name: "Leg Day",
         exercises: [
-          { id: uuidv4(), name: "Squat", sets: 4, reps: 8, weight: 80 },
-          { id: uuidv4(), name: "Leg Press", sets: 3, reps: 10, weight: 120 },
+          { id: "exercise-5", name: "Squat", sets: 4, reps: 8, weight: 80 },
+          {
+            id: "exercise-6",
+            name: "Leg Press",
+            sets: 3,
+            reps: 10,
+            weight: 120,
+          },
         ],
-      },
-      {
-        name: "Rest Day",
-        exercises: [],
       },
     ],
   },
@@ -45,14 +58,14 @@ export const dummyWorkoutPlan: WorkoutPlan[] = [
         name: "Push Day",
         exercises: [
           {
-            id: uuidv4(),
+            id: "exercise-1",
             name: "Incline Bench Press",
             sets: 4,
             reps: 8,
             weight: 70,
           },
           {
-            id: uuidv4(),
+            id: "exercise-2",
             name: "Dumbell Press",
             sets: 3,
             reps: 10,
@@ -61,27 +74,26 @@ export const dummyWorkoutPlan: WorkoutPlan[] = [
         ],
       },
       {
-        name: "Pull Day",
+        name: "Pull A",
         exercises: [
           {
-            id: uuidv4(),
+            id: "exercise-3",
             name: "Triceps pulldown",
             sets: 4,
             reps: 6,
             weight: 100,
           },
-          { id: uuidv4(), name: "Biceps curl", sets: 3, reps: 8, weight: 60 },
+          {
+            id: "exercise-4",
+            name: "Biceps curl",
+            sets: 3,
+            reps: 8,
+            weight: 60,
+          },
         ],
       },
       {
         name: "Leg Day",
-        exercises: [
-          { id: uuidv4(), name: "Squat", sets: 4, reps: 8, weight: 80 },
-          { id: uuidv4(), name: "Leg Press", sets: 3, reps: 10, weight: 120 },
-        ],
-      },
-      {
-        name: "Rest Day",
         exercises: [],
       },
     ],
@@ -89,7 +101,7 @@ export const dummyWorkoutPlan: WorkoutPlan[] = [
 ];
 
 export const dummyWeeklySchedule: WeeklyWorkoutSchedule = {
-  planId: "plan-1",
+  planId: "plan-2",
   days: {
     Monday: "Push Day",
     Tuesday: "Pull Day",
@@ -97,7 +109,7 @@ export const dummyWeeklySchedule: WeeklyWorkoutSchedule = {
     Thursday: "Leg Day",
     Friday: "Push Day",
     Saturday: "Pull Day",
-    Sunday: "Rest Day",
+    Sunday: "Leg Day",
   },
 };
 
