@@ -1,8 +1,8 @@
 "use client";
+import { useExerciseForm } from "@/hooks/useExerciseForm";
 import { WorkoutPlan } from "@/types/newTypes";
 import { ChevronDown, NotebookPen, Pen, Repeat, Weight, X } from "lucide-react";
-import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import React from "react";
 
 type ExerciseFormProps = {
   workout: WorkoutPlan[];
@@ -10,80 +10,30 @@ type ExerciseFormProps = {
 };
 
 const ExerciseForm = ({ workout, setWorkout }: ExerciseFormProps) => {
-  const [selectedPlanId, setSelectedPlanId] = useState<string>("");
-  const [selectedWorkoutName, setSelectedWorkoutName] = useState<string>("");
-
-  const [exerciseName, setExerciseName] = useState("");
-  const [exerciseSets, setExerciseSets] = useState(1);
-  const [exerciseReps, setExerciseReps] = useState(1);
-  const [exerciseWeight, setExerciseWeight] = useState(1);
-
-  const selectedWorkout = workout.find(
-    (workout) => workout.id === selectedPlanId
-  );
-
-  const resetForm = () => {
-    setExerciseName("");
-    setExerciseReps(1);
-    setExerciseSets(1);
-    setExerciseWeight(1);
-  };
-
-  const addExercise = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (
-      !exerciseName.trim() ||
-      !selectedWorkout ||
-      !selectedPlanId ||
-      !exerciseSets ||
-      !exerciseReps ||
-      !exerciseWeight
-    )
-      return;
-
-    const newExercise = {
-      id: "exercise-" + uuidv4(),
-      name: exerciseName,
-      sets: exerciseSets,
-      reps: exerciseReps,
-      weight: exerciseWeight,
-    };
-
-    const updatedWorkout = { ...selectedWorkout };
-
-    const training = updatedWorkout.trainings.find(
-      (t) => t.name === selectedWorkoutName
-    );
-
-    if (!training) return;
-
-    training.exercises.push(newExercise);
-
-    const existingPlans = JSON.parse(localStorage.getItem("workout") || "[]");
-
-    const updatedPlans = existingPlans.map((plan: WorkoutPlan) =>
-      plan.id === selectedPlanId ? updatedWorkout : plan
-    );
-
-    localStorage.setItem("workout", JSON.stringify(updatedPlans));
-
-    setWorkout((prev) =>
-      prev.map((plan) => (plan.id === selectedPlanId ? updatedWorkout : plan))
-    );
-
-    resetForm();
-  };
+  const {
+    selectedPlanId,
+    setSelectedPlanId,
+    selectedWorkoutName,
+    setSelectedWorkoutName,
+    exerciseName,
+    setExerciseName,
+    exerciseSets,
+    setExerciseSets,
+    exerciseReps,
+    setExerciseReps,
+    exerciseWeight,
+    setExerciseWeight,
+    selectedWorkout,
+    addExercise,
+    isFormValid,
+  } = useExerciseForm(workout, setWorkout);
 
   return (
     <div className="border-2 flex flex-col border-gray-100 rounded-xl justify-center p-4 w-full max-w-[300px] h-fit">
       <h1 className="font-semibold flex gap-5 items-center mb-2 text-2xl">
         <NotebookPen color="blue" /> Add exercise
       </h1>
-      <form
-        onSubmit={addExercise}
-        className="text-black border-0 border-gray-200 w-full font-semibold"
-      >
+      <form className="text-black border-0 border-gray-200 w-full font-semibold">
         <label
           className="mb-2 flex gap-2 justify-between"
           htmlFor="exerciseName"
@@ -220,15 +170,12 @@ const ExerciseForm = ({ workout, setWorkout }: ExerciseFormProps) => {
 
         <input
           type="submit"
+          onClick={addExercise}
           className={`${
-            !exerciseName.trim() || !selectedPlanId || !selectedWorkoutName
-              ? "bg-gray-400 cursor-not-allowed"
-              : ""
-          }text-white bg-blue-500 rounded-xl p-2 mt-4 flex justify-center w-full items-center font-semibold`}
+            !isFormValid ? "bg-gray-400 cursor-not-allowed" : ""
+          }text-white bg-blue-500 rounded-xl p-2 mt-4 flex justify-center w-full items-center font-semibold cursor-pointer`}
           value="+ Add plan"
-          disabled={
-            !exerciseName.trim() || !selectedPlanId || !selectedWorkoutName
-          }
+          disabled={!isFormValid}
         />
       </form>
     </div>

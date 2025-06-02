@@ -1,14 +1,19 @@
 "use client";
+import { useExerciseForm } from "@/hooks/useExerciseForm";
 import { WorkoutPlan } from "@/types/newTypes";
-import { ChevronDown } from "lucide-react";
-import React, { useState } from "react";
+import { ChevronDown, Trash } from "lucide-react";
+import React from "react";
 
 type WorkoutSelectProps = {
   workout: WorkoutPlan[];
+  setWorkout: React.Dispatch<React.SetStateAction<WorkoutPlan[]>>;
 };
 
-const WorkoutSelect = ({ workout }: WorkoutSelectProps) => {
-  const [selectedPlanId, setSelectedPlanId] = useState<string>("");
+const WorkoutSelect = ({ workout, setWorkout }: WorkoutSelectProps) => {
+  const { selectedPlanId, setSelectedPlanId, removeExercise } = useExerciseForm(
+    workout,
+    setWorkout
+  );
 
   const selectedWorkout = workout.find(
     (workout) => workout.id === selectedPlanId
@@ -46,7 +51,20 @@ const WorkoutSelect = ({ workout }: WorkoutSelectProps) => {
               {trainings.exercises.length > 0 ? (
                 <ol className="list-disc pl-6 text-gray-700">
                   {trainings.exercises.map((exercise) => (
-                    <li key={exercise.id}>{exercise.name}</li>
+                    <li className="flex justify-between" key={exercise.id}>
+                      {exercise.name}
+                      <Trash
+                        color="blue"
+                        onClick={() =>
+                          removeExercise(
+                            selectedPlanId,
+                            trainings.name,
+                            exercise.id
+                          )
+                        }
+                        className="cursor-pointer"
+                      />
+                    </li>
                   ))}
                 </ol>
               ) : (

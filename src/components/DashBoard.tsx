@@ -6,7 +6,7 @@ import DietList from "./diet/DietList";
 import DateBar from "./DateBar";
 import { DietDay } from "@/types/types";
 import { getWeekday } from "@/utils/getWeekday";
-import { dummyWeeklySchedule, dummyWorkoutPlan } from "@/data/newTraining";
+import { dummyWeeklySchedule, dummyWorkoutPlan } from "@/data/training";
 import TrainingList from "./training/TrainingList";
 import { WorkoutPlan } from "@/types/newTypes";
 

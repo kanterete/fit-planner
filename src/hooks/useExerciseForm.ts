@@ -1,11 +1,11 @@
-"use client";
-
-import { WorkoutPlan } from "@/types/newTypes";
 import { useState } from "react";
+import { WorkoutPlan, Exercise } from "@/types/newTypes";
 import { v4 as uuidv4 } from "uuid";
 
-export function useTraining() {
-  const [workout, setWorkout] = useState<WorkoutPlan[]>([]);
+export const useExerciseForm = (
+  workout: WorkoutPlan[],
+  setWorkout: React.Dispatch<React.SetStateAction<WorkoutPlan[]>>
+) => {
   const [selectedPlanId, setSelectedPlanId] = useState<string>("");
   const [selectedWorkoutName, setSelectedWorkoutName] = useState<string>("");
 
@@ -14,9 +14,7 @@ export function useTraining() {
   const [exerciseReps, setExerciseReps] = useState(1);
   const [exerciseWeight, setExerciseWeight] = useState(1);
 
-  const selectedWorkout = workout.find(
-    (workout) => workout.id === selectedPlanId
-  );
+  const selectedWorkout = workout.find((plan) => plan.id === selectedPlanId);
 
   const resetForm = () => {
     setExerciseName("");
@@ -25,20 +23,19 @@ export function useTraining() {
     setExerciseWeight(1);
   };
 
+  const isFormValid =
+    !!exerciseName.trim() &&
+    !!selectedPlanId &&
+    !!selectedWorkoutName &&
+    !!exerciseSets &&
+    !!exerciseReps &&
+    !!exerciseWeight;
+
   const addExercise = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isFormValid || !selectedWorkout) return;
 
-    if (
-      !exerciseName.trim() ||
-      !selectedWorkout ||
-      !selectedPlanId ||
-      !exerciseSets ||
-      !exerciseReps ||
-      !exerciseWeight
-    )
-      return;
-
-    const newExercise = {
+    const newExercise: Exercise = {
       id: "exercise-" + uuidv4(),
       name: exerciseName,
       sets: exerciseSets,
@@ -47,17 +44,14 @@ export function useTraining() {
     };
 
     const updatedWorkout = { ...selectedWorkout };
-
     const training = updatedWorkout.trainings.find(
       (t) => t.name === selectedWorkoutName
     );
-
     if (!training) return;
 
     training.exercises.push(newExercise);
 
     const existingPlans = JSON.parse(localStorage.getItem("workout") || "[]");
-
     const updatedPlans = existingPlans.map((plan: WorkoutPlan) =>
       plan.id === selectedPlanId ? updatedWorkout : plan
     );
@@ -70,21 +64,50 @@ export function useTraining() {
 
     resetForm();
   };
+
+  const removeExercise = (
+    planId: string,
+    trainingName: string,
+    exerciseId: string
+  ) => {
+    const updatedPlans = workout.map((plan) =>
+      plan.id !== planId
+        ? plan
+        : {
+            ...plan,
+            trainings: plan.trainings.map((training) =>
+              training.name !== trainingName
+                ? training
+                : {
+                    ...training,
+                    exercises: training.exercises.filter(
+                      (exercise) => exercise.id !== exerciseId
+                    ),
+                  }
+            ),
+          }
+    );
+
+    setWorkout(updatedPlans);
+    localStorage.setItem("workout", JSON.stringify(updatedPlans));
+  };
+
   return {
-    workout,
-    setWorkout,
     selectedPlanId,
     setSelectedPlanId,
     selectedWorkoutName,
     setSelectedWorkoutName,
     exerciseName,
     setExerciseName,
-    exerciseReps,
-    setExerciseReps,
     exerciseSets,
     setExerciseSets,
+    exerciseReps,
+    setExerciseReps,
     exerciseWeight,
     setExerciseWeight,
+    selectedWorkout,
     addExercise,
+    isFormValid,
+    removeExercise,
   };
-}
+};
