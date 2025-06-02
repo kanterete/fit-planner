@@ -2,11 +2,11 @@
 import { useEffect, useState } from "react";
 import Stats from "./Stats";
 import { getDate } from "@/utils/getDate";
-import DietList from "./diet/DietList";
 import DateBar from "./DateBar";
 import { DietDay } from "@/types/types";
 import { getWeekday } from "@/utils/getWeekday";
 import { dummyWeeklySchedule, dummyWorkoutPlan } from "@/data/training";
+import DietList from "./diet/DietList";
 import TrainingList from "./training/TrainingList";
 import { WorkoutPlan } from "@/types/newTypes";
 
