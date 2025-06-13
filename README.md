@@ -5,5 +5,7 @@ Tech Stack:
   <li>Next.js</li>
   <li>Tailwind CSS</li>
   <li>TypeScript</li>
+  <li>MongoDB</li>
+  <li>NextAuth.js</li>
   <li>Shadcn/ui</li>
 </ul>
