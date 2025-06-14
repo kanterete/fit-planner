@@ -10,7 +10,12 @@ export default function AuthStatus() {
     return (
       <div>
         Zalogowany jako: {session.user?.email}
-        <button onClick={() => signOut()}>Wyloguj się</button>
+        <button
+          className="text-white bg-blue-500 rounded-xl p-2 mt-4 flex justify-center w-fit items-center font-semibold cursor-pointer"
+          onClick={() => signOut()}
+        >
+          Wyloguj się
+        </button>
       </div>
     );
   }
@@ -18,7 +23,12 @@ export default function AuthStatus() {
   return (
     <div>
       Nie zalogowany
-      <button onClick={() => signIn()}>Zaloguj się</button>
+      <button
+        className="text-white bg-blue-500 rounded-xl p-2 mt-4 flex justify-center w-fit items-center font-semibold cursor-pointer"
+        onClick={() => signIn()}
+      >
+        Zaloguj się
+      </button>
     </div>
   );
 }

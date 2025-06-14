@@ -1,47 +1,45 @@
 "use client";
+import { TriangleAlert } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
   const [pending, setPending] = useState(false);
+
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    setError("");
-
     if (!email.trim() && !password.trim()) {
-      setError("all fields are necessary.");
       return;
     }
 
     setPending(true);
 
-    try {
-      const res = await fetch("/api/auth/singup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (!res.ok) {
-        setError(data.message || "cos nie tak przy rejestracji");
-        setPending(false);
-        return;
-      }
+    if (res.ok) {
+      setPending(false);
 
-      toast.success("Register successfull ✅");
-      setEmail("");
-      setPassword("");
-    } catch (err) {
-      setError(err);
-    } finally {
+      toast.success(data.message);
+      router.push("/login");
+    } else if (res.status === 400) {
+      setError(data.message);
+      setPending(false);
+    } else if (res.status === 500) {
+      setError(data.message);
       setPending(false);
     }
   };
@@ -49,11 +47,7 @@ const Register = () => {
   return (
     <div className="mx-auto flex items-center max-w-84 border border-gray-200 rounded-xl p-4 flex-col mt-8">
       <h1 className="text-2xl text-blue-700 font-semibold">Register</h1>
-      <form
-        action="POST"
-        className="flex flex-col mt-4 w-full"
-        onSubmit={handleSubmit}
-      >
+      <form className="flex flex-col mt-4 w-full" onSubmit={handleSubmit}>
         <label
           htmlFor="email"
           className="text-xl text-blue-700 font-semibold mb-2"
@@ -67,7 +61,6 @@ const Register = () => {
           className="border border-blue-700 rounded-xl p-1 mb-2"
           placeholder=" email"
           onChange={(e) => setEmail(e.target.value)}
-          value={email}
           disabled={pending}
         />
         <label
@@ -83,15 +76,19 @@ const Register = () => {
           className="border border-blue-700 rounded-xl p-1 mb-2"
           placeholder=" password"
           disabled={pending}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <input
           type="submit"
           value="Register"
           className="text-white bg-blue-500 rounded-xl p-2 mt-4 flex justify-center w-full items-center font-semibold cursor-pointer"
         />
-        {error && (
+        {!!error && (
           <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
-            {error}
+            <p className="flex gap-2 items-center">
+              <TriangleAlert />
+              {error}
+            </p>
           </div>
         )}
       </form>
