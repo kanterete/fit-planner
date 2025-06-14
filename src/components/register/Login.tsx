@@ -1,54 +1,29 @@
 "use client";
-import Link from "next/link";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-const Register = () => {
-  const [email, setEmail] = useState("");
+const Login = () => {
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [pending, setPending] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    setError("");
-
-    if (!email.trim() && !password.trim()) {
+    if (!login.trim() && !password.trim()) {
       setError("all fields are necessary.");
       return;
     }
 
-    setPending(true);
+    setLogin("");
+    setPassword("");
 
-    try {
-      const res = await fetch("/api/auth/singup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || "cos nie tak przy rejestracji");
-        setPending(false);
-        return;
-      }
-
-      toast.success("Register successfull ✅");
-      setEmail("");
-      setPassword("");
-    } catch (err) {
-      setError(err);
-    } finally {
-      setPending(false);
-    }
+    toast("Login successfull ✅");
   };
 
   return (
     <div className="mx-auto flex items-center max-w-84 border border-gray-200 rounded-xl p-4 flex-col mt-8">
-      <h1 className="text-2xl text-blue-700 font-semibold">Register</h1>
+      <h1 className="text-2xl text-blue-700 font-semibold">Login</h1>
       <form
         action="POST"
         className="flex flex-col mt-4 w-full"
@@ -66,9 +41,8 @@ const Register = () => {
           id="email"
           className="border border-blue-700 rounded-xl p-1 mb-2"
           placeholder=" email"
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-          disabled={pending}
+          onChange={(e) => setLogin(e.target.value)}
+          value={login}
         />
         <label
           htmlFor="password"
@@ -82,11 +56,10 @@ const Register = () => {
           id="password"
           className="border border-blue-700 rounded-xl p-1 mb-2"
           placeholder=" password"
-          disabled={pending}
         />
         <input
           type="submit"
-          value="Register"
+          value="Login"
           className="text-white bg-blue-500 rounded-xl p-2 mt-4 flex justify-center w-full items-center font-semibold cursor-pointer"
         />
         {error && (
@@ -95,11 +68,8 @@ const Register = () => {
           </div>
         )}
       </form>
-      <Link href="/login" className="mt-2  d text-blue-700">
-        You have an account? <span className="font-bold">Sign Up</span>
-      </Link>
     </div>
   );
 };
 
-export default Register;
+export default Login;
