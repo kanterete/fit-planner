@@ -1,35 +1,15 @@
-import { TrainingDay } from "@/types/types";
-
 type DateBarProps = {
-  today: string;
-  trainingToday: TrainingDay | undefined;
+  weekday: string;
+  todayTrainingName: string;
 };
 
-const DateBar = ({ today, trainingToday }: DateBarProps) => {
-  function getDayName(dateString: string): string {
-    const days = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    const date = new Date(dateString);
-    return days[date.getDay()];
-  }
-  const dayName = getDayName(today);
-  const trainingType = trainingToday ? trainingToday.name : null;
-
+const DateBar = ({ todayTrainingName, weekday }: DateBarProps) => {
   return (
     <div className="my-4 p-4 md:px-8 mx-auto border-2 border-gray-100 w-full bg-blue-500 text-white h-fit md:h-40 rounded-xl flex flex-col justify-center">
       <h2 className="text-2xl md:text-3xl font-semibold">
-        🔥 Today: {dayName}
+        🔥 Today: {weekday}
       </h2>
-      <h1 className="text-3xl md:text-4xl font-bold">
-        {trainingToday ? trainingType : "Nothing planned for this day"}
-      </h1>
+      <h1 className="text-3xl md:text-4xl font-bold">{todayTrainingName}</h1>
     </div>
   );
 };

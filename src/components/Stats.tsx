@@ -11,11 +11,11 @@ const Stats = ({ caloriesToday }: StatsProps) => {
         <ChartNoAxesCombined color="blue" /> Stats for today
       </h1>
       <div className="flex flex-col text-xl">
-        <p className="text-gray-500 font-medium flex justify-between sm:gap-4 ">
+        <p className="text-blue-700 font-medium flex justify-between sm:gap-4 ">
           Calories: <span className="text-black">{caloriesToday} kcal</span>
         </p>
 
-        <p className="text-gray-500 font-medium flex justify-between  sm:gap-4 ">
+        <p className="text-blue-700 font-medium flex justify-between  sm:gap-4 ">
           Weight: <span className="text-black">68,5 kg</span>
         </p>
       </div>

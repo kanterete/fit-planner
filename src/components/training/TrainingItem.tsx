@@ -1,9 +1,16 @@
-import { Exercise } from "@/types/types";
-import React from "react";
+import { Exercise } from "@/types/newTypes";
+
 type TrainingItemProps = {
-  exercises: Exercise[];
+  exercises?: Exercise[];
 };
-const TrainingItem = ({ exercises }: TrainingItemProps) => {
+
+const TrainingItem = ({ exercises = [] }: TrainingItemProps) => {
+  if (exercises.length === 0) {
+    return (
+      <span className="text-xl text-gray-400 font-semibold">Rest day 😌</span>
+    );
+  }
+
   return (
     <div className="flex flex-col text-xl font-medium w-full justify-between">
       <ol>

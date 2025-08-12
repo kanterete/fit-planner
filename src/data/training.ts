@@ -1,62 +1,127 @@
-export const trainingData = [
+import {
+  DailyTrainingAssignment,
+  WeeklyWorkoutSchedule,
+  WorkoutPlan,
+} from "@/types/newTypes";
+
+export const dummyWorkoutPlan: WorkoutPlan[] = [
   {
-    id: 1,
-    name: "Push Day - Type A",
-    date: "2025-05-23",
-    exercises: [
-      { name: "Bench Press", sets: 3, reps: 5, weight: 70 },
-      { name: "Overhead Press", sets: 3, reps: 8, weight: 40 },
-      { name: "Dumbbell Flys", sets: 3, reps: 12, weight: 10 },
-      { name: "Triceps Pushdown", sets: 3, reps: 15, weight: 25 },
-      { name: "Incline Dumbbell Press", sets: 3, reps: 10, weight: 25 },
-      { name: "Lateral Raises", sets: 3, reps: 12, weight: 7 },
-      { name: "Dips", sets: 3, reps: 10, weight: 20 },
-      { name: "Cable Chest Fly", sets: 3, reps: 15, weight: 20 },
+    id: "plan-1",
+    name: "4 Day Split",
+    trainings: [
+      {
+        name: "Push Day",
+        exercises: [
+          {
+            id: "exercise-1",
+            name: "Bench Press",
+            sets: 4,
+            reps: 8,
+            weight: 70,
+          },
+          { id: "exercise-2", name: "OHP", sets: 3, reps: 10, weight: 40 },
+        ],
+      },
+      {
+        name: "Pull Day",
+        exercises: [
+          { id: "exercise-3", name: "Deadlift", sets: 4, reps: 6, weight: 100 },
+          {
+            id: "exercise-4",
+            name: "Barbell Row",
+            sets: 3,
+            reps: 8,
+            weight: 60,
+          },
+        ],
+      },
+      {
+        name: "Leg Day",
+        exercises: [
+          { id: "exercise-5", name: "Squat", sets: 4, reps: 8, weight: 80 },
+          {
+            id: "exercise-6",
+            name: "Leg Press",
+            sets: 3,
+            reps: 10,
+            weight: 120,
+          },
+        ],
+      },
     ],
   },
   {
-    id: 2,
-    name: "Push Day - Type B",
-    date: "2025-05-25",
-    exercises: [
-      { name: "Incline Bench Press", sets: 3, reps: 6, weight: 60 },
-      { name: "Machine Shoulder Press", sets: 3, reps: 10, weight: 45 },
-      { name: "Chest Dips", sets: 3, reps: 10, weight: 15 },
-      { name: "Arnold Press", sets: 3, reps: 8, weight: 20 },
-      { name: "Close-grip Bench Press", sets: 3, reps: 8, weight: 60 },
-      { name: "Pec Deck Machine", sets: 3, reps: 12, weight: 35 },
-      { name: "Overhead Triceps Extension", sets: 3, reps: 12, weight: 15 },
-      { name: "Cable Lateral Raise", sets: 3, reps: 15, weight: 5 },
+    id: "plan-2",
+    name: "FBW",
+    trainings: [
+      {
+        name: "Push Day",
+        exercises: [
+          {
+            id: "exercise-1",
+            name: "Incline Bench Press",
+            sets: 4,
+            reps: 8,
+            weight: 70,
+          },
+          {
+            id: "exercise-2",
+            name: "Dumbell Press",
+            sets: 3,
+            reps: 10,
+            weight: 40,
+          },
+        ],
+      },
+      {
+        name: "Pull A",
+        exercises: [
+          {
+            id: "exercise-3",
+            name: "Triceps pulldown",
+            sets: 4,
+            reps: 6,
+            weight: 100,
+          },
+          {
+            id: "exercise-4",
+            name: "Biceps curl",
+            sets: 3,
+            reps: 8,
+            weight: 60,
+          },
+        ],
+      },
+      {
+        name: "Leg Day",
+        exercises: [],
+      },
     ],
   },
+];
+
+export const dummyWeeklySchedule: WeeklyWorkoutSchedule = {
+  planId: "plan-2",
+  days: {
+    Monday: "Push Day",
+    Tuesday: "Pull Day",
+    Wednesday: "Push Day",
+    Thursday: "Leg Day",
+    Friday: "Push Day",
+    Saturday: "Pull Day",
+    Sunday: "Leg Day",
+  },
+};
+
+export const dummyDailyAssignments: DailyTrainingAssignment[] = [
   {
-    id: 3,
-    name: "Leg Day - Type A",
-    date: "2025-05-24",
-    exercises: [
-      { name: "Squats", sets: 3, reps: 8, weight: 70 },
-      { name: "Leg Press", sets: 3, reps: 12, weight: 120 },
-      { name: "Leg Extension", sets: 3, reps: 15, weight: 40 },
-      { name: "Romanian Deadlifts", sets: 3, reps: 10, weight: 60 },
-      { name: "Hamstring Curl", sets: 3, reps: 15, weight: 35 },
-      { name: "Standing Calf Raise", sets: 3, reps: 20, weight: 50 },
-      { name: "Walking Lunges", sets: 3, reps: 12, weight: 15 },
-      { name: "Glute Bridge", sets: 3, reps: 12, weight: 40 },
-    ],
+    date: "2025-05-29",
+    planId: "plan-1",
+    trainingName: "Push Day",
   },
   {
-    id: 4,
-    name: "Leg Day - Type B",
-    date: "2025-05-26",
-    exercises: [
-      { name: "Front Squats", sets: 3, reps: 8, weight: 50 },
-      { name: "Bulgarian Split Squat", sets: 3, reps: 10, weight: 20 },
-      { name: "Hack Squat Machine", sets: 3, reps: 12, weight: 100 },
-      { name: "Sumo Deadlift", sets: 3, reps: 8, weight: 80 },
-      { name: "Seated Leg Curl", sets: 3, reps: 15, weight: 35 },
-      { name: "Donkey Calf Raises", sets: 3, reps: 20, weight: 40 },
-      { name: "Step-ups", sets: 3, reps: 10, weight: 15 },
-      { name: "Hip Thrusts", sets: 3, reps: 12, weight: 50 },
-    ],
+    date: "2025-05-30",
+    planId: "plan-1",
+    trainingName: "Leg Day",
   },
 ];

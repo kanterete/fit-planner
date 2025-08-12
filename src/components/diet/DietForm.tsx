@@ -1,55 +1,29 @@
 "use client";
 import { CalendarHeart, Clock, Flame, Pen, ScrollText } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import { getDate } from "@/utils/getDate";
 import { DietDay } from "@/types/types";
+import { useDiet } from "@/hooks/useDiet";
 
-const DietForm = () => {
+type DietFormProps = {
+  diet: DietDay[];
+  setDiet: React.Dispatch<React.SetStateAction<DietDay[]>>;
+};
+
+const DietForm = ({ diet, setDiet }: DietFormProps) => {
   const today = getDate();
-
-  const [mealTime, setMealTime] = useState("Breakfast");
-  const [mealDate, setMealDate] = useState(today);
-  const [mealName, setMealName] = useState("");
-  const [mealCalories, setMealCalories] = useState<number>(0);
-
-  const collectData = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!mealName || mealCalories === null || !mealTime) return;
-
-    const stored = localStorage.getItem("diet");
-    const parsed: Record<string, DietDay> = stored ? JSON.parse(stored) : {};
-
-    //If there's not a day, add one
-    if (!parsed[mealDate]) {
-      parsed[mealDate] = {
-        id: Date.now(),
-        date: mealDate,
-        meals: [],
-      };
-    }
-
-    //read meals object from parsed data
-    const meals = parsed[mealDate].meals;
-    const existingMeal = meals.find((m) => m.time === mealTime);
-
-    if (existingMeal) {
-      existingMeal.items.push(mealName);
-      existingMeal.calories += mealCalories;
-    } else {
-      meals.push({
-        time: mealTime,
-        items: [mealName],
-        calories: mealCalories,
-      });
-    }
-
-    localStorage.setItem("diet", JSON.stringify(parsed));
-
-    //Clear after adding
-    setMealName("");
-    setMealCalories(0);
-  };
+  const {
+    mealTime,
+    setMealTime,
+    mealDate,
+    setMealDate,
+    mealName,
+    setMealName,
+    mealCalories,
+    setMealCalories,
+    addMeal,
+    isFormValid,
+  } = useDiet(diet, setDiet);
 
   return (
     <div className="border-2 flex flex-col border-gray-100 rounded-xl justify-center p-4 w-full max-w-[300px] h-fit">
@@ -121,12 +95,15 @@ const DietForm = () => {
           min={today}
         />
       </form>
-      <button
-        onClick={collectData}
-        className="text-white bg-blue-500 rounded-xl p-2 mt-4 flex justify-center w-full items-center font-semibold"
-      >
-        + Add Diet
-      </button>
+      <input
+        type="submit"
+        onClick={addMeal}
+        className={`${
+          !isFormValid ? "bg-gray-400 cursor-not-allowed" : ""
+        }text-white bg-blue-500 rounded-xl p-2 mt-4 flex justify-center w-full items-center font-semibold cursor-pointer`}
+        value="+ Add plan"
+        disabled={!isFormValid}
+      />
     </div>
   );
 };

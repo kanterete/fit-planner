@@ -18,6 +18,12 @@ const DietItem = ({ meals }: DietItemProps) => {
     if (meals) setIsOpen(new Array(meals.length).fill(false));
   }, [meals]);
 
+  if (meals.length === 0) {
+    return (
+      <span className="text-xl text-gray-400 font-semibold">Cheat day 😋</span>
+    );
+  }
+
   return (
     <>
       {meals.map((meal, index) => (
@@ -25,7 +31,7 @@ const DietItem = ({ meals }: DietItemProps) => {
           <div className="text-gray-500 sm:gap-4 ">
             <p
               onClick={() => toggleDropdown(index)}
-              className="cursor-pointer font-medium flex justify-between text-xl"
+              className="cursor-pointer font-medium flex justify-between text-xl text-blue-700"
             >
               {meal.time}
               {!isOpen[index] ? (
@@ -45,8 +51,12 @@ const DietItem = ({ meals }: DietItemProps) => {
                 >
                   <ul>
                     {meal.items.map((item, i) => (
-                      <li key={i} className="flex text-md ml-2 text-black">
+                      <li
+                        key={i}
+                        className="flex text-md ml-2 mb-2 text-black justify-between"
+                      >
                         - {item}
+                        {/* <Trash color="blue" onClick={removeMeal()}/> */}
                       </li>
                     ))}
                   </ul>

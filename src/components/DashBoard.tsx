@@ -1,20 +1,42 @@
 "use client";
 import { useEffect, useState } from "react";
 import Stats from "./Stats";
-import TrainingList from "./Training/TrainingList";
 import { getDate } from "@/utils/getDate";
-import DietList from "./Diet/DietList";
 import DateBar from "./DateBar";
 import { DietDay } from "@/types/types";
-import { useTraining } from "@/hooks/useTraining";
+import { getWeekday } from "@/utils/getWeekday";
+import { dummyWeeklySchedule, dummyWorkoutPlan } from "@/data/training";
+import DietList from "./diet/DietList";
+import TrainingList from "./training/TrainingList";
+import { WorkoutPlan } from "@/types/newTypes";
+import AuthStatus from "./AuthStatus";
 
 const DashBoard = () => {
+  const [workout, setWorkout] = useState<WorkoutPlan[]>([]);
+
   const today = getDate();
+  const weekday = getWeekday();
+
+  const activePlan = workout.find(
+    (plan) => plan.id === dummyWeeklySchedule.planId
+  );
+
+  const todayTrainingName = dummyWeeklySchedule.days[weekday];
+
+  const todayTraining = activePlan?.trainings.find(
+    (training) => training.name === todayTrainingName
+  );
 
   const [diet, setDiet] = useState<DietDay[]>([]);
-  const { training } = useTraining();
 
   useEffect(() => {
+    const stored: WorkoutPlan[] = JSON.parse(
+      localStorage.getItem("workout") || "[]"
+    );
+
+    if (stored.length > 0) setWorkout(stored);
+    else setWorkout(dummyWorkoutPlan);
+
     //load diets from storage
     const storedDiet = localStorage.getItem("diet");
     if (storedDiet) {
@@ -24,7 +46,6 @@ const DashBoard = () => {
     }
   }, []);
 
-  const trainingToday = training.find((training) => training.date === today);
   const dietToday = diet.find((diet) => diet.date === today);
   const caloriesToday = dietToday
     ? dietToday.meals.reduce((total, meal) => total + meal.calories, 0)
@@ -32,11 +53,12 @@ const DashBoard = () => {
 
   return (
     <main className="p-4 mx-auto my-4 max-w-[1240px] h-fit flex flex-col">
-      <DateBar today={today} trainingToday={trainingToday} />
+      <AuthStatus />
+      <DateBar weekday={weekday} todayTrainingName={todayTrainingName} />
       <section className="flex w-full flex-wrap md:flex-row gap-2">
         <Stats caloriesToday={caloriesToday} />
         <DietList dietToday={dietToday} />
-        <TrainingList trainingToday={trainingToday} />
+        <TrainingList todayTraining={todayTraining} />
       </section>
     </main>
   );
