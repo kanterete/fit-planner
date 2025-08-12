@@ -27,6 +27,6 @@ export async function GET(request: Request) {
     await newUser.save();
     return NextResponse.json({ message: "User created" }, { status: 201 });
   } catch (err) {
-    return NextResponse.json({ message: "Something wrong" }, { status: 500 });
+    return NextResponse.json({ message: { err } }, { status: 500 });
   }
 }
