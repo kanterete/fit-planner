@@ -1,25 +1,50 @@
-export type Exercise = {
+export type WeekDay =
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday"
+  | "Sunday";
+
+export interface Exercise {
+  id: string;
   name: string;
   sets: number;
   reps: number;
   weight: number;
-};
-
-export type TrainingDay = {
-  id: number;
+}
+export interface Training {
+  id: string;
   name: string;
-  date: string;
   exercises: Exercise[];
-};
+}
 
-export type Meal = {
-  time: string;
-  items: string[];
-  calories: number;
-};
+export interface User {
+  id: string;
+  name: string;
+  workoutPlans: WorkoutPlan[];
+  activePlanId?: string;
+}
 
-export type DietDay = {
-  id: number;
+export interface WorkoutPlan {
+  id: string;
+  name: string;
+  trainings: Training[];
+  schedule: WeeklyWorkoutSchedule;
+}
+
+// Schedule tygodniowy przypięty do planu
+export interface WeeklyWorkoutSchedule {
+  days: Partial<Record<WeekDay, string>>;
+  // klucz = dzień tygodnia
+  // wartość = nazwa treningu z danego planu
+  // Partial bo nie zawsze każdy dzień będzie miał trening
+}
+
+// Konkretny dzień w kalendarzu
+export interface DailyTrainingAssignment {
   date: string;
-  meals: Meal[];
-};
+  planId: string;
+  trainingId: string;
+}

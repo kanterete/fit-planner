@@ -1,65 +1,109 @@
 "use client";
 import { useEffect, useState } from "react";
-import Stats from "./Stats";
-import { getDate } from "@/utils/getDate";
-import DateBar from "./DateBar";
-import { DietDay } from "@/types/types";
 import { getWeekday } from "@/utils/getWeekday";
-import { dummyWeeklySchedule, dummyWorkoutPlan } from "@/data/training";
-import DietList from "./diet/DietList";
-import TrainingList from "./training/TrainingList";
-import { WorkoutPlan } from "@/types/newTypes";
-import AuthStatus from "./AuthStatus";
+
+import { WorkoutPlan } from "@/types/types";
+import { testingUser } from "@/data/training";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const DashBoard = () => {
-  const [workout, setWorkout] = useState<WorkoutPlan[]>([]);
+  const selectedUser = testingUser;
 
-  const today = getDate();
-  const weekday = getWeekday();
+  const [workouts, setWorkouts] = useState<WorkoutPlan[]>([]);
+  const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan>();
+  const [activePlan, setActivePlan] = useState(selectedUser.activePlanId);
 
-  const activePlan = workout.find(
-    (plan) => plan.id === dummyWeeklySchedule.planId
-  );
+  const today = getWeekday();
 
-  const todayTrainingName = dummyWeeklySchedule.days[weekday];
+  useEffect(() => {
+    const storedWorkouts: WorkoutPlan[] = JSON.parse(
+      localStorage.getItem("workout") || "[]"
+    );
+    const storedActivePlan = localStorage.getItem("activePlanId") || "p1";
 
-  const todayTraining = activePlan?.trainings.find(
+    if (storedWorkouts.length > 0) {
+      setWorkouts(storedWorkouts);
+      setActivePlan(storedActivePlan);
+      setWorkoutPlan(
+        storedWorkouts.find((workout) => workout.id === storedActivePlan)
+      );
+    } else {
+      setWorkouts(selectedUser.workoutPlans);
+      setWorkoutPlan(
+        selectedUser.workoutPlans.find((workout) => workout.id === activePlan)
+      );
+    }
+  }, [selectedUser, activePlan]);
+
+  const todayTrainingName =
+    workoutPlan?.schedule.days[today] ?? "No training for today";
+
+  const todayTraining = workoutPlan?.trainings.find(
     (training) => training.name === todayTrainingName
   );
 
-  const [diet, setDiet] = useState<DietDay[]>([]);
-
-  useEffect(() => {
-    const stored: WorkoutPlan[] = JSON.parse(
-      localStorage.getItem("workout") || "[]"
-    );
-
-    if (stored.length > 0) setWorkout(stored);
-    else setWorkout(dummyWorkoutPlan);
-
-    //load diets from storage
-    const storedDiet = localStorage.getItem("diet");
-    if (storedDiet) {
-      const parsed: Record<string, DietDay> = JSON.parse(storedDiet);
-      const values = Object.values(parsed);
-      setDiet(values);
-    }
-  }, []);
-
-  const dietToday = diet.find((diet) => diet.date === today);
-  const caloriesToday = dietToday
-    ? dietToday.meals.reduce((total, meal) => total + meal.calories, 0)
-    : 0;
-
   return (
-    <main className="p-4 mx-auto my-4 max-w-[1240px] h-fit flex flex-col">
-      <AuthStatus />
-      <DateBar weekday={weekday} todayTrainingName={todayTrainingName} />
-      <section className="flex w-full flex-wrap md:flex-row gap-2">
-        <Stats caloriesToday={caloriesToday} />
-        <DietList dietToday={dietToday} />
-        <TrainingList todayTraining={todayTraining} />
+    <main className="p-4 mx-auto my-4 container h-fit flex flex-col">
+      <section className="my-4 p-4 md:px-8 mx-auto border-2 border-gray-100 w-full bg-blue-500 text-white h-fit md:h-40 rounded-xl flex flex-col justify-center">
+        <h1 className="text-2xl md:text-3xl font-semibold">
+          🔥 Today: {today}
+        </h1>
+        <span className="text-3xl md:text-4xl font-bold">
+          {todayTrainingName}
+        </span>
+        <span className="text-xl">
+          {workoutPlan && (
+            <p>
+              Active plan: {workoutPlan.name} - {workoutPlan.id}{" "}
+            </p>
+          )}
+        </span>
       </section>
+
+      <section className="my-4 p-4 md:px-8 mx-auto border-2 border-gray-100 w-full bg-blue-500 text-white h-fit md:h-40 rounded-xl flex flex-col justify-center">
+        <h1 className="text-2xl md:text-3xl font-semibold">
+          Training exercises list:
+        </h1>
+        {todayTraining ? (
+          <ol>
+            {todayTraining.exercises.map((exercise) => (
+              <li key={exercise.id}>
+                {exercise.name} - {exercise.sets}s x {exercise.reps}r x
+                {exercise.weight}kg
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p>No exercises for today</p>
+        )}
+      </section>
+
+      <section>
+        <p>Change your plan</p>
+        <Select value={activePlan} onValueChange={(val) => setActivePlan(val)}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Change your plan" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {workouts.map((workout) => (
+                <SelectItem key={workout.id} value={workout.id}>
+                  {workout.name} - {workout.id}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </section>
+
+      <section className="flex w-full flex-wrap md:flex-row gap-2"></section>
     </main>
   );
 };

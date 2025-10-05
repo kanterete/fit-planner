@@ -1,7 +1,7 @@
 import { Exercise } from "@/types/newTypes";
 
 type TrainingItemProps = {
-  exercises?: Exercise[];
+  exercises: Exercise[];
 };
 
 const TrainingItem = ({ exercises = [] }: TrainingItemProps) => {
@@ -19,7 +19,7 @@ const TrainingItem = ({ exercises = [] }: TrainingItemProps) => {
             key={id}
             className="text-gray-500 flex flex-col sm:flex-row justify-between md:gap-4"
           >
-            {id + 1}. {exercise.name}{" "}
+            {id + 1}. {exercise.name}
             <span className="text-black">
               {exercise.sets}x{exercise.reps} - {exercise.weight} kg
             </span>

@@ -1,14 +1,7 @@
-type Weekday =
-  | "Monday"
-  | "Tuesday"
-  | "Wednesday"
-  | "Thursday"
-  | "Friday"
-  | "Saturday"
-  | "Sunday";
+import { WeekDay } from "@/types/types";
 
-export const getWeekday = (): Weekday => {
+export const getWeekday = (): WeekDay => {
   return new Date().toLocaleDateString("en-US", {
     weekday: "long",
-  }) as Weekday;
+  }) as WeekDay;
 };

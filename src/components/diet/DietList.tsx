@@ -3,7 +3,7 @@
 import { CookingPot } from "lucide-react";
 import React from "react";
 import DietItem from "./DietItem";
-import { DietDay } from "@/types/types";
+import { DietDay } from "@/types/oldTypes";
 
 type DietListProps = {
   dietToday?: DietDay;

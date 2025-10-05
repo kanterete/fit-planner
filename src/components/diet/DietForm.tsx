@@ -2,7 +2,7 @@
 import { CalendarHeart, Clock, Flame, Pen, ScrollText } from "lucide-react";
 import React from "react";
 import { getDate } from "@/utils/getDate";
-import { DietDay } from "@/types/types";
+import { DietDay } from "@/types/oldTypes";
 import { useDiet } from "@/hooks/useDiet";
 
 type DietFormProps = {

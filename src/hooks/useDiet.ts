@@ -1,4 +1,4 @@
-import { DietDay } from "@/types/types";
+import { DietDay } from "@/types/oldTypes";
 import { getDate } from "@/utils/getDate";
 import { useState } from "react";
 

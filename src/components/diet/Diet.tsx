@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import DietList from "./DietList";
 import DietForm from "./DietForm";
-import { DietDay } from "@/types/types";
+import { DietDay } from "@/types/oldTypes";
 import { getDate } from "@/utils/getDate";
 
 const Diet = () => {
