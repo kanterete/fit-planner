@@ -1,4 +1,4 @@
-import { Exercise } from "@/types/newTypes";
+import { Exercise } from "@/types/types";
 
 type TrainingItemProps = {
   exercises: Exercise[];
