@@ -41,7 +41,7 @@ export const planB: WorkoutPlan = {
       Tuesday: "Legs",
       Thursday: "Push",
       Saturday: "Legs",
-      Sunday: "Legs",
+      Sunday: "Push",
     },
   },
 };

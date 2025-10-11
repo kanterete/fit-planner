@@ -28,9 +28,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
-        <section className="h-screen w-screen overflow-x-hidden">
+        <section className="h-screen w-screen overflow-x-hidden bg-background">
           <NavBar />
           {children}
         </section>
