@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getWeekday } from "@/utils/getWeekday";
-
 import { WeekDay, WorkoutPlan } from "@/types/types";
 import { testingUser } from "@/data/training";
 import {
@@ -15,14 +14,6 @@ import {
 } from "@/components/ui/select";
 
 const DashBoard = () => {
-  const selectedUser = testingUser;
-
-  const [workouts, setWorkouts] = useState<WorkoutPlan[]>([]);
-  const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan>();
-  const [activePlan, setActivePlan] = useState(selectedUser.activePlanId);
-
-  const today = getWeekday();
-
   const WEEK_DAYS: WeekDay[] = [
     "Monday",
     "Tuesday",
@@ -33,9 +24,24 @@ const DashBoard = () => {
     "Sunday",
   ];
 
+  const selectedUser = testingUser;
+
+  const [workouts, setWorkouts] = useState<WorkoutPlan[]>([]);
+  const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan>();
+  const [activePlan, setActivePlan] = useState(selectedUser.activePlanId);
+
+  const today = getWeekday();
+
+  const todayTrainingName =
+    workoutPlan?.schedule.days[today] ?? "No training for today";
+
+  const todayTraining = workoutPlan?.trainings.find(
+    (training) => training.name === todayTrainingName
+  );
+
   useEffect(() => {
     const storedWorkouts: WorkoutPlan[] = JSON.parse(
-      localStorage.getItem("workout") || "[]"
+      localStorage.getItem("workouts") || "[]"
     );
     const storedActivePlan = localStorage.getItem("activePlanId") || "p1";
 
@@ -46,19 +52,30 @@ const DashBoard = () => {
         storedWorkouts.find((workout) => workout.id === storedActivePlan)
       );
     } else {
-      setWorkouts(selectedUser.workoutPlans);
-      setWorkoutPlan(
-        selectedUser.workoutPlans.find((workout) => workout.id === activePlan)
+      const defaultWorkouts = selectedUser.workoutPlans;
+      const defaultActivePlan = selectedUser.activePlanId;
+      const defaultPlan = defaultWorkouts.find(
+        (plan) => plan.id === defaultActivePlan
       );
+
+      localStorage.setItem("workouts", JSON.stringify(defaultWorkouts));
+      localStorage.setItem("activePlanId", defaultActivePlan ?? "p1");
+      localStorage.setItem("workoutPlan", JSON.stringify(defaultPlan));
+
+      setWorkouts(defaultWorkouts);
+      setActivePlan(defaultActivePlan);
+      setWorkoutPlan(defaultPlan);
     }
   }, [selectedUser, activePlan]);
 
-  const todayTrainingName =
-    workoutPlan?.schedule.days[today] ?? "No training for today";
+  const handleActivePlanChange = (val: string) => {
+    localStorage.setItem("activePlanId", val);
+    setActivePlan(val);
 
-  const todayTraining = workoutPlan?.trainings.find(
-    (training) => training.name === todayTrainingName
-  );
+    const newPlan = workouts.find((workout) => workout.id === val);
+
+    localStorage.setItem("workoutPlan", JSON.stringify(newPlan));
+  };
 
   return (
     <main className="p-4 mx-auto my-4 container h-fit flex flex-col">
@@ -98,7 +115,12 @@ const DashBoard = () => {
 
       <section className="mb-4">
         <p>Change your plan</p>
-        <Select value={activePlan} onValueChange={(val) => setActivePlan(val)}>
+        <Select
+          value={activePlan}
+          onValueChange={(val) => {
+            handleActivePlanChange(val);
+          }}
+        >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Change your plan" />
           </SelectTrigger>
