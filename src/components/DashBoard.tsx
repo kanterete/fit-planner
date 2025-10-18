@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getWeekday } from "@/utils/getWeekday";
 import { WeekDay, WorkoutPlan } from "@/types/types";
 import { testingUser } from "@/data/training";
 import {
@@ -13,24 +12,38 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const DashBoard = () => {
-  const WEEK_DAYS: WeekDay[] = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
+import { startOfWeek, addDays, format } from "date-fns";
 
+const DashBoard = () => {
   const selectedUser = testingUser;
 
   const [workouts, setWorkouts] = useState<WorkoutPlan[]>([]);
   const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan>();
   const [activePlan, setActivePlan] = useState(selectedUser.activePlanId);
 
-  const today = getWeekday();
+  const [weekdaySelections, setWeekdaySelections] = useState<
+    Partial<Record<WeekDay, string>>
+  >({});
+
+  const today = format(new Date(), "EEEE") as WeekDay;
+
+  const getCurrentWeekDays = () => {
+    const monday = startOfWeek(new Date(), { weekStartsOn: 1 });
+
+    const days = [...Array(7)].map((_, i) => {
+      const date = addDays(monday, i);
+      return {
+        name: format(date, "EEEE") as WeekDay,
+        short: format(date, "EE"),
+        day: format(date, "dd"),
+        date: format(date, "dd.MM.yy"),
+        fullDate: date,
+      };
+    });
+    return days;
+  };
+
+  const currentWeek = getCurrentWeekDays();
 
   const todayTrainingName =
     workoutPlan?.schedule.days[today] ?? "No training for today";
@@ -67,6 +80,12 @@ const DashBoard = () => {
       setWorkoutPlan(defaultPlan);
     }
   }, [selectedUser, activePlan]);
+
+  useEffect(() => {
+    if (workoutPlan) {
+      setWeekdaySelections({ ...workoutPlan.schedule.days });
+    }
+  }, [workoutPlan]);
 
   const handleActivePlanChange = (val: string) => {
     localStorage.setItem("activePlanId", val);
@@ -136,33 +155,46 @@ const DashBoard = () => {
         </Select>
       </section>
 
-      <section className="w-full md:flex-row gap-2 bg-primary border-primary-foreground rounded-xl p-2 md:max-w-82">
+      <section className="flex flex-col md:flex-row w-full gap-2 rounded-xl p-2 ">
         {workoutPlan &&
-          WEEK_DAYS.map((day) => {
-            const trainingDay = workoutPlan.schedule.days[day] || "Rest";
+          currentWeek.map((day, index) => {
             return (
               <div
-                className="flex justify-between w-full md:max-w-82 y text-muted rounded-xl p-1 items-center px-2 mb-2"
-                key={day}
+                className={`flex flex-col w-full bg-accent text-black rounded-xl p-6 items-center px-2 mb-2 ${
+                  day.name === today
+                    ? "bg-primary text-white"
+                    : "bg-accent text-black"
+                }`}
+                key={index}
               >
-                <p>{day}</p>
-
-                <Select defaultValue={trainingDay}>
-                  <SelectTrigger className="w-32">
-                    <SelectValue placeholder="Change a training?" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Trainings</SelectLabel>
-                      <SelectItem value="Rest">Rest</SelectItem>
-                      {workoutPlan.trainings.map((training) => (
-                        <SelectItem key={training.id} value={training.name}>
-                          {training.name}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                <p className="text-2xl mb-2">{day.name}</p>
+                <p className="text-4xl mb-4">{day.day}</p>
+                <div className="">
+                  <Select
+                    value={weekdaySelections[day.name]}
+                    onValueChange={(val) => {
+                      setWeekdaySelections((prev) => ({
+                        ...prev,
+                        [day.name]: val,
+                      }));
+                    }}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Change a training?" />
+                    </SelectTrigger>
+                    <SelectContent className="">
+                      <SelectGroup>
+                        <SelectLabel>Trainings</SelectLabel>
+                        <SelectItem value="Rest">Rest</SelectItem>
+                        {workoutPlan.trainings.map((training) => (
+                          <SelectItem key={training.id} value={training.name}>
+                            {training.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             );
           })}
