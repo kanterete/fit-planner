@@ -12,6 +12,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
 import { startOfWeek, addDays, format } from "date-fns";
 
 const DashBoard = () => {
@@ -155,50 +164,63 @@ const DashBoard = () => {
         </Select>
       </section>
 
-      <section className="flex flex-col md:flex-row w-full gap-2 rounded-xl p-2 ">
-        {workoutPlan &&
-          currentWeek.map((day, index) => {
-            return (
-              <div
-                className={`flex flex-col w-full bg-accent text-black rounded-xl p-6 items-center px-2 mb-2 ${
-                  day.name === today
-                    ? "bg-primary text-white"
-                    : "bg-accent text-black"
-                }`}
+      <Carousel className="md:w-full">
+        <CarouselContent>
+          {workoutPlan &&
+            currentWeek.map((day, index) => (
+              <CarouselItem
                 key={index}
+                className="sm:basis-1/2 md:basis-1/3 lg:basis-1/5"
               >
-                <p className="text-2xl mb-2">{day.name}</p>
-                <p className="text-4xl mb-4">{day.day}</p>
-                <div className="">
-                  <Select
-                    value={weekdaySelections[day.name]}
-                    onValueChange={(val) => {
-                      setWeekdaySelections((prev) => ({
-                        ...prev,
-                        [day.name]: val,
-                      }));
-                    }}
+                <div>
+                  <Card
+                    className={`${
+                      day.name === today
+                        ? "bg-primary text-white"
+                        : "bg-accent text-black"
+                    }`}
                   >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Change a training?" />
-                    </SelectTrigger>
-                    <SelectContent className="">
-                      <SelectGroup>
-                        <SelectLabel>Trainings</SelectLabel>
-                        <SelectItem value="Rest">Rest</SelectItem>
-                        {workoutPlan.trainings.map((training) => (
-                          <SelectItem key={training.id} value={training.name}>
-                            {training.name}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
+                    <CardContent>
+                      <p className="text-xl mb-2">{day.name}</p>
+                      <p className="text-5xl mb-4">{day.day}</p>
+                      <div className="">
+                        <Select
+                          value={weekdaySelections[day.name]}
+                          onValueChange={(val) => {
+                            setWeekdaySelections((prev) => ({
+                              ...prev,
+                              [day.name]: val,
+                            }));
+                          }}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Change?" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Trainings</SelectLabel>
+                              <SelectItem value="Rest">Rest</SelectItem>
+                              {workoutPlan.trainings.map((training) => (
+                                <SelectItem
+                                  key={training.id}
+                                  value={training.name}
+                                >
+                                  {training.name}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
-              </div>
-            );
-          })}
-      </section>
+              </CarouselItem>
+            ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
     </main>
   );
 };
