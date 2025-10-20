@@ -105,6 +105,50 @@ const DashBoard = () => {
     localStorage.setItem("workoutPlan", JSON.stringify(newPlan));
   };
 
+  const handleScheduleChange = (val: string, day: WeekDay, id: string) => {
+    const plan: WorkoutPlan = JSON.parse(localStorage.getItem("workoutPlan")!);
+    const workouts: WorkoutPlan[] = JSON.parse(
+      localStorage.getItem("workouts")!
+    );
+
+    const updatedPlan = {
+      ...plan,
+      schedule: {
+        ...plan.schedule,
+        days: {
+          ...plan.schedule.days,
+          [day]: val,
+        },
+      },
+    };
+
+    const updatedWorkouts = workouts.map((plan) =>
+      plan.id === id
+        ? {
+            ...plan,
+            schedule: {
+              ...plan.schedule,
+              days: {
+                ...plan.schedule.days,
+                [day]: val,
+              },
+            },
+          }
+        : plan
+    );
+
+    localStorage.setItem("workoutPlan", JSON.stringify(updatedPlan));
+    localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
+
+    setWeekdaySelections((prev) => ({
+      ...prev,
+      [day]: val,
+    }));
+
+    setWorkouts(updatedWorkouts);
+    setWorkoutPlan(updatedPlan);
+  };
+
   return (
     <main className="p-4 mx-auto my-4 container h-fit flex flex-col">
       <section className="my-4 p-4 md:px-8 mx-auto border-2 w-full bg-primary text-white h-fit md:h-40 rounded-xl flex flex-col justify-center">
@@ -186,12 +230,9 @@ const DashBoard = () => {
                       <div className="">
                         <Select
                           value={weekdaySelections[day.name]}
-                          onValueChange={(val) => {
-                            setWeekdaySelections((prev) => ({
-                              ...prev,
-                              [day.name]: val,
-                            }));
-                          }}
+                          onValueChange={(val) =>
+                            handleScheduleChange(val, day.name, workoutPlan.id)
+                          }
                         >
                           <SelectTrigger>
                             <SelectValue placeholder="Change?" />
