@@ -13,8 +13,10 @@ const NavBar = () => {
 
   return (
     <nav className="mx-auto flex items-center justify-between w-full h-24 p-4 border-b border-gray-200">
-      <h1 className="text-2xl md:text-4xl p-4 font-bold">
-        Fit<span className="text-blue-600 ">Planner</span>
+      <h1 className="text-2xl md:text-4xl p-4 font-bold text-black">
+        <Link href="/">
+          Fit<span className="text-blue-600 ">Planner</span>
+        </Link>
       </h1>
 
       {/* Desktop Menu */}
