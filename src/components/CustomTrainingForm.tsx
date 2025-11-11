@@ -34,19 +34,21 @@ const CustomTrainingForm = ({
       return;
     }
 
-    setTrainings((prev) => [
-      ...prev,
+    const updatedTrainings = [
+      ...trainings,
       {
-        id: `t${prev.length + 1}`,
+        id: `t${trainings.length + 1}`,
         name: trainingName,
         exercises: input,
       },
-    ]);
+    ];
+
+    setTrainings(updatedTrainings);
 
     toast.success(`Training "${trainingName}" added successfully`);
+    localStorage.setItem("trainings", JSON.stringify(updatedTrainings));
 
     // Clearing
-    localStorage.setItem("trainings", JSON.stringify(trainings));
     setInputs([]);
     setTrainingName("");
   };
@@ -72,25 +74,6 @@ const CustomTrainingForm = ({
               onChange={(e) => setTrainingName(e.target.value)}
             />
           </div>
-          {/* <div className="flex flex-col bg-primary-foreground text-center rounded-xl p-2">
-              <label className="mb-2 font-semibold">
-                Select your workout plan:
-              </label>
-              <Select>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Change your plan" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {workouts.map((workout) => (
-                      <SelectItem key={workout.id} value={workout.id}>
-                        {workout.name} - {workout.id}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div> */}
         </div>
 
         {input.length > 0 ? (

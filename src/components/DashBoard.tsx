@@ -17,6 +17,8 @@ import Calendar from "./Calendar";
 import Exercises from "./Exercises";
 import TodaySummary from "./TodaySummary";
 import CustomTrainingForm from "./CustomTrainingForm";
+import { Minus } from "lucide-react";
+import { Button } from "./ui/button";
 
 const DashBoard = () => {
   const selectedUser = testingUser;
@@ -48,7 +50,11 @@ const DashBoard = () => {
     );
     const storedActivePlan = localStorage.getItem("activePlanId") || "p1";
 
-    if (storedWorkouts.length > 0) {
+    if (
+      storedWorkouts.length > 0 &&
+      storedTrainings.length > 0 &&
+      storedActivePlan != null
+    ) {
       setTrainings(storedTrainings);
       setWorkouts(storedWorkouts);
       setActivePlan(storedActivePlan);
@@ -108,18 +114,7 @@ const DashBoard = () => {
     };
 
     const updatedWorkouts = workouts.map((plan) =>
-      plan.id === id
-        ? {
-            ...plan,
-            schedule: {
-              ...plan.schedule,
-              days: {
-                ...plan.schedule.days,
-                [day]: val,
-              },
-            },
-          }
-        : plan
+      plan.id === id ? updatedPlan : plan
     );
 
     localStorage.setItem("workoutPlan", JSON.stringify(updatedPlan));
@@ -132,6 +127,19 @@ const DashBoard = () => {
 
     setWorkouts(updatedWorkouts);
     setWorkoutPlan(updatedPlan);
+  };
+
+  const handleExerciseDelete = (trainingId: string, exerciseId: string) => {
+    const newTrainings = trainings.map((t) =>
+      t.id === trainingId
+        ? { ...t, exercises: t.exercises.filter((ex) => ex.id !== exerciseId) }
+        : t
+    );
+
+    const filtered = newTrainings.filter((t) => t.exercises.length > 0);
+
+    setTrainings(filtered);
+    localStorage.setItem("trainings", JSON.stringify(filtered));
   };
 
   return (
@@ -177,7 +185,19 @@ const DashBoard = () => {
               <p className="font-semibold">{t.name}</p>
               <ol className="ml-4">
                 {t.exercises.map((ex) => (
-                  <li key={ex.id}>{ex.name}</li>
+                  <li key={ex.id}>
+                    {ex.name} - {ex.reps}r x {ex.sets}s x {ex.weight}kg
+                    <Button
+                      className=" bg-red-600 size-0.5 text-white"
+                      variant="outline"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleExerciseDelete(t.id, ex.id);
+                      }}
+                    >
+                      <Minus />
+                    </Button>
+                  </li>
                 ))}
               </ol>
             </div>
