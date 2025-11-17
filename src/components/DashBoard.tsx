@@ -19,6 +19,7 @@ import TodaySummary from "./TodaySummary";
 import CustomTrainingForm from "./CustomTrainingForm";
 import { Minus } from "lucide-react";
 import { Button } from "./ui/button";
+import AddTrainingForm from "./AddTrainingForm";
 
 const DashBoard = () => {
   const selectedUser = testingUser;
@@ -87,11 +88,11 @@ const DashBoard = () => {
     }
   }, [workoutPlan]);
 
-  const handleActivePlanChange = (val: string) => {
-    localStorage.setItem("activePlanId", val);
-    setActivePlan(val);
+  const handleActivePlanChange = (id: string) => {
+    localStorage.setItem("activePlanId", id);
+    setActivePlan(id);
 
-    const newPlan = workouts.find((workout) => workout.id === val);
+    const newPlan = workouts.find((workout) => workout.id === id);
 
     localStorage.setItem("workoutPlan", JSON.stringify(newPlan));
   };
@@ -203,6 +204,11 @@ const DashBoard = () => {
             </div>
           ))}
         </section>
+        <AddTrainingForm
+          trainings={trainings}
+          workouts={workouts}
+          setWorkouts={setWorkouts}
+        />
         <CustomTrainingForm trainings={trainings} setTrainings={setTrainings} />
       </section>
 
