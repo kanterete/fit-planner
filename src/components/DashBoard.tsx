@@ -26,8 +26,10 @@ const DashBoard = () => {
 
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [workouts, setWorkouts] = useState<WorkoutPlan[]>([]);
-  const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan>();
-  const [activePlan, setActivePlan] = useState(selectedUser.activePlanId);
+  const [workoutPlan, setWorkoutPlan] = useState<WorkoutPlan | undefined>(
+    undefined
+  );
+  const [activePlan, setActivePlan] = useState("");
   const [weekdaySelections, setWeekdaySelections] = useState<
     Partial<Record<WeekDay, string>>
   >({});
@@ -49,38 +51,41 @@ const DashBoard = () => {
     const storedWorkouts: WorkoutPlan[] = JSON.parse(
       localStorage.getItem("workouts") || "[]"
     );
-    const storedActivePlan = localStorage.getItem("activePlanId") || "p1";
+    const storedActivePlan = localStorage.getItem("activePlanId") || "";
+
+    const storedWorkout: WorkoutPlan = JSON.parse(
+      localStorage.getItem("workoutPlan") || ""
+    );
 
     if (
-      storedWorkouts.length > 0 &&
-      storedTrainings.length > 0 &&
-      storedActivePlan != null
+      storedWorkouts.length &&
+      storedTrainings.length &&
+      storedActivePlan &&
+      storedWorkout
     ) {
       setTrainings(storedTrainings);
       setWorkouts(storedWorkouts);
       setActivePlan(storedActivePlan);
-      setWorkoutPlan(
-        storedWorkouts.find((workout) => workout.id === storedActivePlan)
-      );
+      setWorkoutPlan(storedWorkout);
     } else {
       const defaultWorkouts = selectedUser.workoutPlans;
-      const defaultActivePlan = selectedUser.activePlanId;
+      const defaultActivePlan = selectedUser.activePlanId!;
       const defaultPlan = defaultWorkouts.find(
         (plan) => plan.id === defaultActivePlan
       );
       const defaultTrainings = [push, legs];
 
-      localStorage.setItem("workouts", JSON.stringify(defaultWorkouts));
-      localStorage.setItem("activePlanId", defaultActivePlan ?? "p1");
-      localStorage.setItem("workoutPlan", JSON.stringify(defaultPlan));
-      localStorage.setItem("trainings", JSON.stringify(defaultTrainings));
-
+      setTrainings(defaultTrainings);
       setWorkouts(defaultWorkouts);
       setActivePlan(defaultActivePlan);
       setWorkoutPlan(defaultPlan);
-      setTrainings(defaultTrainings);
+
+      localStorage.setItem("trainings", JSON.stringify(defaultTrainings));
+      localStorage.setItem("workouts", JSON.stringify(defaultWorkouts));
+      localStorage.setItem("activePlanId", defaultActivePlan);
+      localStorage.setItem("workoutPlan", JSON.stringify(defaultPlan));
     }
-  }, [selectedUser, activePlan]);
+  }, [selectedUser]);
 
   useEffect(() => {
     if (workoutPlan) {
@@ -89,26 +94,24 @@ const DashBoard = () => {
   }, [workoutPlan]);
 
   const handleActivePlanChange = (id: string) => {
-    localStorage.setItem("activePlanId", id);
     setActivePlan(id);
-
     const newPlan = workouts.find((workout) => workout.id === id);
+    if (!newPlan) return;
 
+    setWorkoutPlan(newPlan);
+    localStorage.setItem("activePlanId", id);
     localStorage.setItem("workoutPlan", JSON.stringify(newPlan));
   };
 
   const handleScheduleChange = (val: string, day: WeekDay, id: string) => {
-    const plan: WorkoutPlan = JSON.parse(localStorage.getItem("workoutPlan")!);
-    const workouts: WorkoutPlan[] = JSON.parse(
-      localStorage.getItem("workouts")!
-    );
+    if (!workoutPlan) return;
 
     const updatedPlan = {
-      ...plan,
+      ...workoutPlan,
       schedule: {
-        ...plan.schedule,
+        ...workoutPlan.schedule,
         days: {
-          ...plan.schedule.days,
+          ...workoutPlan.schedule.days,
           [day]: val,
         },
       },
@@ -118,16 +121,15 @@ const DashBoard = () => {
       plan.id === id ? updatedPlan : plan
     );
 
-    localStorage.setItem("workoutPlan", JSON.stringify(updatedPlan));
-    localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
-
+    setWorkoutPlan(updatedPlan);
+    setWorkouts(updatedWorkouts);
     setWeekdaySelections((prev) => ({
       ...prev,
       [day]: val,
     }));
 
-    setWorkouts(updatedWorkouts);
-    setWorkoutPlan(updatedPlan);
+    localStorage.setItem("workoutPlan", JSON.stringify(updatedPlan));
+    localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
   };
 
   const handleExerciseDelete = (trainingId: string, exerciseId: string) => {
@@ -208,6 +210,7 @@ const DashBoard = () => {
           trainings={trainings}
           workouts={workouts}
           setWorkouts={setWorkouts}
+          setWorkoutPlan={setWorkoutPlan}
         />
         <CustomTrainingForm trainings={trainings} setTrainings={setTrainings} />
       </section>

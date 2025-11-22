@@ -16,38 +16,68 @@ type AddTrainingFormProps = {
   trainings: Training[];
   workouts: WorkoutPlan[];
   setWorkouts: React.Dispatch<React.SetStateAction<WorkoutPlan[]>>;
+  setWorkoutPlan: React.Dispatch<React.SetStateAction<WorkoutPlan | undefined>>;
 };
 
 const AddTrainingForm = ({
   trainings,
   workouts,
   setWorkouts,
+  setWorkoutPlan,
 }: AddTrainingFormProps) => {
   const [input, setInputs] = useState<Training[]>([]);
   const [selectedTrainingId, setSelectedTrainingId] = useState("");
   const [selectedWorkoutId, setSelectedWorkoutId] = useState("");
 
-  const selectedTraining = trainings.find((t) => t.id === selectedTrainingId);
+  const handleAddToInputs = () => {
+    if (!selectedTrainingId) {
+      toast.warning("You must select training!");
+      return;
+    }
+
+    const selectedTraining = trainings.find((t) => t.id === selectedTrainingId);
+    if (!selectedTraining) return;
+
+    setInputs((prev) => [
+      ...prev,
+      { ...selectedTraining, id: crypto.randomUUID() },
+    ]);
+
+    toast.success(`Training "${selectedTraining.name}" added to list`);
+  };
+
+  const handleRemoveFromInputs = (id: string) => {
+    setInputs((prev) => prev.filter((t) => t.id !== id));
+    toast.success("Training removed from list");
+  };
 
   const handleTraining = () => {
-    if (!selectedWorkoutId || !(input.length > 0)) {
+    if (!selectedWorkoutId || input.length === 0) {
       toast.warning("There are empty fields");
       return;
     }
 
     const newWorkouts = workouts.map((w) =>
-      w.id === selectedWorkoutId ? { ...w, trainings: input } : w
+      w.id === selectedWorkoutId
+        ? { ...w, trainings: [...w.trainings, ...input] }
+        : w
     );
 
+    setWorkouts(newWorkouts);
+
+    const updatedWorkout = newWorkouts.find((w) => w.id === selectedWorkoutId);
+
+    if (updatedWorkout) {
+      setWorkoutPlan(updatedWorkout);
+      localStorage.setItem("workoutPlan", JSON.stringify(updatedWorkout));
+    }
     localStorage.setItem("workouts", JSON.stringify(newWorkouts));
+
     toast.success(
-      `${input.map((i) => i.name)} Trainings added to ${workouts.map((w) =>
-        w.id === selectedWorkoutId ? `${w.name}` : ""
-      )}`
+      `${input.map((i) => i.name).join(", ")} added to ${updatedWorkout?.name}`
     );
 
     setInputs([]);
-    setWorkouts(newWorkouts);
   };
 
   return (
@@ -105,8 +135,7 @@ const AddTrainingForm = ({
                   variant="outline"
                   onClick={(e) => {
                     e.preventDefault();
-                    setInputs((prev) => prev.filter((ak) => ak.id !== inp.id));
-                    toast.success(`Training ${inp.id} deleted`);
+                    handleRemoveFromInputs(inp.id);
                   }}
                 >
                   <Minus />
@@ -148,14 +177,7 @@ const AddTrainingForm = ({
               size="sm"
               onClick={(e) => {
                 e.preventDefault();
-                if (!selectedTrainingId) {
-                  toast.warning("You must select training");
-                } else {
-                  setInputs((prev) => [...prev, selectedTraining!]);
-                  toast.success(
-                    `Training "${selectedTraining!.id}" added successfully`
-                  );
-                }
+                handleAddToInputs();
               }}
             >
               <Plus />

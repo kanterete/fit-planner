@@ -14,43 +14,70 @@ const CustomTrainingForm = ({
   setTrainings,
 }: CustomTrainingFormProps) => {
   const [trainingName, setTrainingName] = useState("");
-
-  const [name, setName] = useState("");
   const [input, setInputs] = useState<Exercise[]>([]);
+
+  const [exerciseName, setExerciseName] = useState("");
   const [sets, setSets] = useState(1);
   const [reps, setReps] = useState(1);
   const [weight, setWeight] = useState(50);
 
+  const handleAddExercise = () => {
+    if (!exerciseName || sets <= 0 || reps <= 0 || weight < 0) {
+      toast.warning("All exercise fields must be valid!");
+      return;
+    }
+
+    setInputs((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        name: exerciseName,
+        sets,
+        reps,
+        weight,
+      },
+    ]);
+
+    toast.success(`Exercise "${exerciseName}" added!`);
+
+    setExerciseName("");
+    setSets(1);
+    setReps(1);
+    setWeight(50);
+  };
+
+  const handleDeleteExercise = (id: string) => {
+    setInputs((prev) => prev.filter((ex) => ex.id !== id));
+    toast.success("Exercise deleted");
+  };
+
   const handleTraining = () => {
     if (!trainingName || !(input.length > 0)) {
-      toast.warning("There are empty fields!");
+      toast.warning("Training name and exercises are required!");
       return;
     }
 
     if (trainings.some((t) => t.name === trainingName)) {
-      toast.warning(
-        `There is already training named ${trainingName}, choose other name`
-      );
+      toast.warning("Training with this name already exists!");
       return;
     }
 
-    const updatedTrainings = [
-      ...trainings,
-      {
-        id: `t${trainings.length + 1}`,
-        name: trainingName,
-        exercises: input,
-      },
-    ];
+    const newTraining: Training = {
+      id: crypto.randomUUID(),
+      name: trainingName,
+      exercises: [...input],
+    };
+
+    const updatedTrainings = [...trainings, newTraining];
 
     setTrainings(updatedTrainings);
-
-    toast.success(`Training "${trainingName}" added successfully`);
     localStorage.setItem("trainings", JSON.stringify(updatedTrainings));
 
+    toast.success(`Training "${trainingName}" added successfully`);
+
     // Clearing
-    setInputs([]);
     setTrainingName("");
+    setInputs([]);
   };
 
   return (
@@ -106,8 +133,7 @@ const CustomTrainingForm = ({
                   variant="outline"
                   onClick={(e) => {
                     e.preventDefault();
-                    setInputs((prev) => prev.filter((ak) => ak.id !== inp.id));
-                    toast.success(`Exercise ${inp.id} deleted`);
+                    handleDeleteExercise(inp.id);
                   }}
                 >
                   <Minus />
@@ -131,8 +157,8 @@ const CustomTrainingForm = ({
                 id="name"
                 className="border-1 border-primary border-dashed p-1 rounded-lg"
                 placeholder="naaame"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={exerciseName}
+                onChange={(e) => setExerciseName(e.target.value)}
                 required
               />
             </div>
@@ -187,15 +213,7 @@ const CustomTrainingForm = ({
               size="sm"
               onClick={(e) => {
                 e.preventDefault();
-                if (!name || !reps || !sets || !weight)
-                  toast.warning("There are empty inputs!");
-                else {
-                  setInputs((prev) => [
-                    ...prev,
-                    { id: `e${prev.length + 1}`, name, sets, reps, weight },
-                  ]);
-                  toast.success(`Exercise "${name}" added successfully`);
-                }
+                handleAddExercise();
               }}
             >
               <Plus />
