@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { WeekDay, WorkoutPlan } from "@/types/types";
-import { startOfWeek, addDays, format } from "date-fns";
+import { addDays, format } from "date-fns";
 
 type CalendarProps = {
   workoutPlan: WorkoutPlan;
@@ -30,23 +30,21 @@ export default function Calendar({
 }: CalendarProps) {
   const today = format(new Date(), "EEEE") as WeekDay;
 
-  const getCurrentWeekDays = () => {
-    const monday = startOfWeek(new Date(), { weekStartsOn: 1 });
-
-    const days = [...Array(7)].map((_, i) => {
-      const date = addDays(monday, i);
+  const getNext7Days = () => {
+    return [...Array(7)].map((_, i) => {
+      const date = addDays(new Date(), i);
       return {
         name: format(date, "EEEE") as WeekDay,
         short: format(date, "EE"),
-        day: format(date, "dd"),
+        day: format(date, "d"),
+        month: format(date, "MMM"),
         date: format(date, "dd.MM.yy"),
         fullDate: date,
       };
     });
-    return days;
   };
 
-  const currentWeek = getCurrentWeekDays();
+  const currentWeek = getNext7Days();
   const todayIndex = currentWeek.findIndex((day) => day.name === today);
 
   const reoderedWeek = [

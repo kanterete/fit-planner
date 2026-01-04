@@ -20,6 +20,7 @@ import CustomTrainingForm from "./CustomTrainingForm";
 import { Minus } from "lucide-react";
 import { Button } from "./ui/button";
 import AddTrainingForm from "./AddTrainingForm";
+import RestTimer from "./RestTimer";
 
 const DashBoard = () => {
   const selectedUser = testingUser;
@@ -33,7 +34,6 @@ const DashBoard = () => {
   const [weekdaySelections, setWeekdaySelections] = useState<
     Partial<Record<WeekDay, string>>
   >({});
-
   const today = format(new Date(), "EEEE") as WeekDay;
 
   const todayTrainingName =
@@ -178,6 +178,7 @@ const DashBoard = () => {
             </Select>
           </section>
         </div>
+        <RestTimer />
 
         <section className="my-4 p-4 md:px-8 border-2 md:max-w-80 border-gray-100 bg-primary text-white h-fit rounded-xl flex flex-col justify-center">
           <h1 className="text-2xl md:text-3xl font-semibold">

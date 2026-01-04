@@ -20,20 +20,10 @@ const NavBar = () => {
       </h1>
 
       {/* Desktop Menu */}
-      <ul className="hidden md:flex text-center items-center font-medium p-4 text-xl md:text-2xl">
+      <ul className="hidden md:flex text-center items-center font-medium p-4 text-xl md:text-2xl text-black">
         <li className="p-4">
           <Link href="/" className="hover:underline">
             Dashboard
-          </Link>
-        </li>
-        <li className="p-4">
-          <Link href="/add-workout" className="hover:underline">
-            Workout
-          </Link>
-        </li>
-        <li className="p-4">
-          <Link href="/add-diet" className="hover:underline">
-            Diet
           </Link>
         </li>
       </ul>
@@ -82,22 +72,6 @@ const NavBar = () => {
                 >
                   <Link href="/" className="hover:underline">
                     Dashboard
-                  </Link>
-                </li>
-                <li
-                  className="py-4 border-b border-gray-200 cursor-pointer w-full"
-                  onClick={toggleNav}
-                >
-                  <Link href="/add-workout" className="hover:underline">
-                    Workout
-                  </Link>
-                </li>
-                <li
-                  className="py-4 cursor-pointer border-b border-gray-200 w-full"
-                  onClick={toggleNav}
-                >
-                  <Link href="/add-diet" className="hover:underline">
-                    Diet
                   </Link>
                 </li>
               </ul>
