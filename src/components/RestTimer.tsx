@@ -26,7 +26,7 @@ export default function RestTimer() {
   };
 
   return (
-    <div className="text-center p-4 border rounded-md max-w-sm mx-auto">
+    <div className="text-center p-4 border rounded-md h-fit max-w-sm mx-auto mb-4">
       <h3 className="text-xl mb-2">Rest</h3>
 
       <div className="text-4xl mb-4">

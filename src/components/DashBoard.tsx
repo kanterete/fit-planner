@@ -177,8 +177,8 @@ const DashBoard = () => {
               </SelectContent>
             </Select>
           </section>
+          <RestTimer />
         </div>
-        <RestTimer />
 
         <section className="my-4 p-4 md:px-8 border-2 md:max-w-80 border-gray-100 bg-primary text-white h-fit rounded-xl flex flex-col justify-center">
           <h1 className="text-2xl md:text-3xl font-semibold">
@@ -207,13 +207,19 @@ const DashBoard = () => {
             </div>
           ))}
         </section>
-        <AddTrainingForm
-          trainings={trainings}
-          workouts={workouts}
-          setWorkouts={setWorkouts}
-          setWorkoutPlan={setWorkoutPlan}
-        />
-        <CustomTrainingForm trainings={trainings} setTrainings={setTrainings} />
+
+        <section>
+          <AddTrainingForm
+            trainings={trainings}
+            workouts={workouts}
+            setWorkouts={setWorkouts}
+            setWorkoutPlan={setWorkoutPlan}
+          />
+          <CustomTrainingForm
+            trainings={trainings}
+            setTrainings={setTrainings}
+          />
+        </section>
       </section>
 
       <Calendar

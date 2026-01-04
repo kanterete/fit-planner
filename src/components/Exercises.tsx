@@ -7,9 +7,9 @@ type ExercisesProps = {
 
 const Exercises = ({ todaysTraining }: ExercisesProps) => {
   return (
-    <section className="my-4 p-4 md:px-8 mx-auto border-2 border-gray-100 w-full bg-primary text-white h-fit md:h-40 rounded-xl flex flex-col justify-center">
-      <h1 className="text-2xl md:text-3xl font-semibold">
-        Training exercises list:
+    <section className="my-4 p-4 md:px-8 mx-auto border-2 border-gray-100 w-full bg-primary text-white h-full md:h-40 rounded-xl flex flex-col justify-center">
+      <h1 className="text-2xl md:text-xl font-semibold">
+        Current training exercises list:
       </h1>
       {todaysTraining ? (
         <ol>
