@@ -44,22 +44,26 @@ const DashBoard = () => {
   ) ?? { id: "", name: "", exercises: [] };
 
   useEffect(() => {
-    const storedTrainings: Training[] = JSON.parse(
-      localStorage.getItem("trainings") || "[]"
-    );
+    const storedTrainingsRaw = localStorage.getItem("trainings");
+    const storedWorkoutsRaw = localStorage.getItem("workouts");
+    const storedActivePlan = localStorage.getItem("activePlanId");
+    const storedWorkoutRaw = localStorage.getItem("workoutPlan");
 
-    const storedWorkouts: WorkoutPlan[] = JSON.parse(
-      localStorage.getItem("workouts") || "[]"
-    );
-    const storedActivePlan = localStorage.getItem("activePlanId") || "";
+    const storedTrainings: Training[] = storedTrainingsRaw
+      ? JSON.parse(storedTrainingsRaw)
+      : [];
 
-    const storedWorkout: WorkoutPlan = JSON.parse(
-      localStorage.getItem("workoutPlan") || ""
-    );
+    const storedWorkouts: WorkoutPlan[] = storedWorkoutsRaw
+      ? JSON.parse(storedWorkoutsRaw)
+      : [];
+
+    const storedWorkout: WorkoutPlan | null = storedWorkoutRaw
+      ? JSON.parse(storedWorkoutRaw)
+      : null;
 
     if (
-      storedWorkouts.length &&
-      storedTrainings.length &&
+      storedTrainings.length > 0 &&
+      storedWorkouts.length > 0 &&
       storedActivePlan &&
       storedWorkout
     ) {
@@ -67,24 +71,25 @@ const DashBoard = () => {
       setWorkouts(storedWorkouts);
       setActivePlan(storedActivePlan);
       setWorkoutPlan(storedWorkout);
-    } else {
-      const defaultWorkouts = selectedUser.workoutPlans;
-      const defaultActivePlan = selectedUser.activePlanId!;
-      const defaultPlan = defaultWorkouts.find(
-        (plan) => plan.id === defaultActivePlan
-      );
-      const defaultTrainings = [push, legs];
-
-      setTrainings(defaultTrainings);
-      setWorkouts(defaultWorkouts);
-      setActivePlan(defaultActivePlan);
-      setWorkoutPlan(defaultPlan);
-
-      localStorage.setItem("trainings", JSON.stringify(defaultTrainings));
-      localStorage.setItem("workouts", JSON.stringify(defaultWorkouts));
-      localStorage.setItem("activePlanId", defaultActivePlan);
-      localStorage.setItem("workoutPlan", JSON.stringify(defaultPlan));
+      return;
     }
+
+    const defaultWorkouts = selectedUser.workoutPlans;
+    const defaultActivePlan = selectedUser.activePlanId!;
+    const defaultPlan = defaultWorkouts.find(
+      (plan) => plan.id === defaultActivePlan
+    );
+    const defaultTrainings = [push, legs];
+
+    setTrainings(defaultTrainings);
+    setWorkouts(defaultWorkouts);
+    setActivePlan(defaultActivePlan);
+    setWorkoutPlan(defaultPlan);
+
+    localStorage.setItem("trainings", JSON.stringify(defaultTrainings));
+    localStorage.setItem("workouts", JSON.stringify(defaultWorkouts));
+    localStorage.setItem("activePlanId", defaultActivePlan);
+    localStorage.setItem("workoutPlan", JSON.stringify(defaultPlan));
   }, [selectedUser]);
 
   useEffect(() => {
