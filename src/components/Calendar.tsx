@@ -74,7 +74,7 @@ export default function Calendar({
                     <p className="text-5xl mb-4">{day.day}</p>
                     <div>
                       <Select
-                        value={weekdaySelections[day.name]}
+                        value={weekdaySelections[day.name] ?? "Rest"}
                         onValueChange={(val) =>
                           handleScheduleChange(val, day.name, workoutPlan.id)
                         }

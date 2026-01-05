@@ -145,6 +145,10 @@ const DashBoard = () => {
     localStorage.setItem("trainings", JSON.stringify(filtered));
   };
 
+  if (!workoutPlan) {
+    return null;
+  }
+
   return (
     <main className="p-4 mx-auto my-4 container h-fit flex flex-col">
       <TodaySummary
