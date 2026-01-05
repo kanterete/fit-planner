@@ -32,7 +32,7 @@ const NavBar = () => {
       <div className="flex items-center p-4">
         <div className={`hidden sm:flex items-center gap-4`}>
           <Bell size={30} className="cursor-pointer" />
-          <Link href="/register">
+          <Link href="/">
             <CircleUserRound size={30} className="cursor-pointer" />
           </Link>
         </div>
@@ -55,7 +55,7 @@ const NavBar = () => {
               <div className="flex justify-end gap-4">
                 <div className="flex gap-4">
                   <Bell size={30} />
-                  <Link href="/register">
+                  <Link href="/">
                     <CircleUserRound size={30} className="cursor-pointer" />
                   </Link>
                 </div>
