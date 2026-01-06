@@ -46,5 +46,5 @@ The application is deployed and available online:
 - Workout history and progress tracking
 
 
-## Screenshots
+## 📸 Screenshots
 <img width="1919" height="925" alt="opera_Wkiks7TSvC" src="https://github.com/user-attachments/assets/a35ed568-852d-4db5-8709-74724e8e622a" />
